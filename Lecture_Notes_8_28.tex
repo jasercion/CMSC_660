@@ -1,0 +1,148 @@
+\documentclass{article}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{tabu}
+\usepackage{hyperref}
+
+\makeatletter
+\def\lecture{\@ifnextchar[{\@lectureWith}{\@lectureWithout}}
+\def\@lectureWith[#1]{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection: #1\@addpunct{.}}%
+		\sectionfont Lecture \thesection. #1\@addpunct{.}}\medbreak}
+\def\@lectureWithout{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection.}%
+		\sectionfont Lecture \thesection.}\medbreak}
+\makeatother
+
+\newcommand{\n}{\newline}
+
+\title{Lectures on Scientific Computing}
+\date{8/28/18}
+\author{Lise-Marie Imbert-Gerard}
+\begin{document}
+	\maketitle
+	
+	\begin{flushleft}
+			\textbf{Prof. Lise-Marie Imbert-Gerard} \n
+			LMIG@math.umd.edu OH. T 11-12 Th 8:30-9:30 \n
+			Office: MATH 4408/CISC 4119 \n
+			Grading: 40\% HW 60\%  Final \n \n
+			Course Website will be updated shortly \n	
+			Note: lookup research topics (numerical solutions for wave equations) \n
+			References for the course will come from Bindel \& Goodman
+	\end{flushleft}
+	
+	\section{Sources of Error}
+	
+	\begin{flushleft}
+	\textbf{Chapter 2 B\&G}
+	
+	We want to understand that there are various sources of error.  When you figure out what the biggest source of error is you can focus on it to increase the accuracy of your algorithm's output.  We need to understand the \textbf{likely} relative size of errors \n
+	
+	We can't tell exactly what the error is, but we want to find out how big the error is in relation to other errors.  \n
+	
+	Overall goal is to reduce the largest source of error. \n
+	
+	\end{flushleft}
+	
+	\subsection{Relative and Absolute Error Cancellation}
+	
+	\begin{flushleft}
+	When we approximate $A$ by $\hat{A}$ ($A$ is actual number and $\hat{A}$ is the approximation) the absolute error is $e=\hat{A}-A\leftrightarrow \hat{A}=A+e$.  The relative error is $\epsilon=\frac{e}{A}\leftrightarrow\hat{A}=A(1+\epsilon)$.  \n
+	
+	Note: if you have a problem where the solution is zero figure that out before you run your equations to avoid dividing by 0. \n
+	
+	\textbf{example:}
+	\end{flushleft}
+	\begin{tabular}{c c c c}
+		$A$ & $\hat{A}$ & $e$ & $\epsilon$ \\
+		$\sqrt{175}$ & 13 & $\approx0.23$ & $~2$\% \\
+		$\sqrt{5}$ & 2 & $\approx0.24$ &  $~11$\%
+	\end{tabular}
+	\begin{flushleft}
+		
+	\textbf{Warning:} Relative errors can grow through cancellation.  If you do, for example, $1.23456-1.2345=1x10^{-5}$ but you only know the accuracy up to the second digit you have no idea of the accuracy of the final digits in the solution\n
+	
+	Formally, \textit{Catastrophic Cancellation} refers to the loss off many digits in a substraction.  Cancellation may also accumulate over many steps.
+	\end{flushleft}
+
+	\subsection{Computer Arithmetic}
+	\begin{flushleft}
+	\begin{enumerate}
+		\item Bits 
+		\item Floating Point Basics \n
+	\end{enumerate} 
+	
+	\textbf{Definition}: In Scientific Notation a real number has three parts: a sign $\pm$, a mantissa $\epsilon(1,10)$, and an exponent $\pm m\times10^{e}$. \n
+	
+	A normal binary floating point has three parts: a sign $(0,1)$, a mantissa $(1,2)$, and an exponent $(-1)^{s}m\times2^{e}$ \n
+	
+	For example, $-2.7520\times10^{3}=(-1)^{1}(1+2^{-2}+(2)^{-4}+2^{-5})\times2^{(2^{3}+2^{1}+2^{0})}$  \n
+	
+	You need to make sure that you specify the number of bits necessary to store the mantissa and the exponent.  A floating point word is 1 bit for the sign and p-1 bits for the mantissa.  \textbf{The machine precision is $\epsilon_{m}\approx2^{-p}$}.  p is the bits for the sign and the bits for the mantissa. \n
+	
+	The IEEE floating point standard: \n
+	
+	\begin{enumerate}
+		\item Single: 32 bits
+		\item Double: 64 bits\n
+	\end{enumerate}
+	
+	\begin{tabular}{c |c | c | c | c}
+		Type & p & $e_{m}$ & $e_{M}$ & $\epsilon_{M}$ \\
+		Single: &24 & -126 & 127 & $~6\times10^{-8}$ \\
+		Double: & 53 & -1022 & 1023 & $~10^{-16}$ \\
+	\end{tabular}
+	
+	When you have a value such as $\frac{1}{3}$ it cannot be stored exactly in a floating point system so it is rounded.  Round-off error is one of the most important sources of error. \n
+	
+	\textbf{Definition: }If x is a real number in a given format, we write $\hat{x}=\text{round}(x)$ which describes the floating point number closest to x in that system.  If x is halfway between two closest floating point numbers the one that is picked to represent x is the one whose last bit is 0.  \n
+	
+	Finding $\hat{x}$ is called rounding and the rounding error is the error that is produced when you approximate $x\leftrightarrow\hat{x}$.  There for the rounding error is defined as $\hat{x}-x$ and the relative error satisfies $|\frac{\hat{x}-x}{x}|\leq\epsilon_{M}$.  i.e. the relative error can never be larger than the machine precision($\epsilon_{M}$). \n
+	
+	The IEEE standard for floating point operations is to return the exact answer correctly rounded. As a consequence, multiplication and addition are individually commutative ($a+b=b+a$, $ab=ba$).  Because we are doing floating point arithmetic, division by 2 is always performed exactly.  This is because in binary numbers division by 2 only changes a single bit.  \n
+	
+	One important thing to keep in mind is that just because something is exact in real arithmetic doesn't mean it is exact in floating point arithmetic. \n
+	
+	\subsection{Modeling Floating Point Error}
+	 
+	 We are going to look at \textbf{Generation} and \textbf{Propagation} of rounding errors.  i.e. How is it first created and how does it propagate through the calculation?\n
+	 
+	 \textbf{example:}\n
+	 
+	 $fl(x+y)=(x+y)(1+\epsilon_{1})$ with $|\epsilon_{1}|\leq\epsilon_{M}$ \n
+	 $fl(x+y+z)=fl(fl(x+y)+z) = ((x+y)((1+\epsilon_{2})+z)(1+\epsilon_{3})$ with $|\epsilon_{2}||\epsilon_{3}|\leq\epsilon_{M}$\n
+	 $=(x+y+z)+(x+y)\epsilon_{2}+(x+y+z)\epsilon_{3}+(x+y)\epsilon_{2}\epsilon_{3}$\n
+	 
+	 \textbf{REMEMBER:} Every time you calculate $fl(x+y)$ you get a new $\epsilon$ value.\n
+	 
+	 We always have:\n
+	 $\epsilon_{i}+\epsilon_{j}\epsilon_{k}\approx\epsilon_{i}$ \n
+	 $(1+\epsilon_{i})(1+\epsilon_{j})\approx1+\epsilon_{i}+\epsilon_{j}$ if $|\epsilon_{i}|,|\epsilon_{j}|,|\epsilon_{k}|\leq\epsilon_{M}$ \n
+	 $\sqrt{1+\epsilon_{i}}\approx1+\frac{\epsilon_i}{2}$\n
+	 
+	 \textbf{example: } \n
+	 
+	 $x=1-\sqrt{1-\delta}$ root $x^{2}-2x+\delta=0$ where $\delta$ is small ($|\delta|<<1$).\n
+	 
+	 We have a catastrophic cancellation case here, because $sqrt{1-\delta}$ is close to 1.  First see we can approximate $x\approx\frac{\delta}{2}$. 
+	 
+	 
+	
+	
+	\end{flushleft}
+	
+
+	
+	
+	
+	
+	
+
+	
+\end{document}

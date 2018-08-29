@@ -84,7 +84,9 @@
 	
 	For example, $-2.7520\times10^{3}=(-1)^{1}(1+2^{-2}+(2)^{-4}+2^{-5})\times2^{(2^{3}+2^{1}+2^{0})}$  \n
 	
-	You need to make sure that you specify the number of bits necessary to store the mantissa and the exponent.  A floating point word is 1 bit for the sign and p-1 bits for the mantissa.  \textbf{The machine precision is $\epsilon_{m}\approx2^{-p}$}.  p is the bits for the sign and the bits for the mantissa. \n
+	You need to make sure that you specify the number of bits necessary to store the mantissa and the exponent.  A floating point word is 1 bit for the sign and p-1 bits for the mantissa.  \textbf{The machine precision is $\epsilon_{m}\approx2^{-p}$}.  p simply represents the total number of bits used to specify the word.  Therefore a typical 32-bit binary floating point number will have $p=24$, from 1 bit for the sign, 23 bits for the mantissa, and 8 bits for the exponent.  For a 64-bit binary floating point number you have $p=53$, from 1 bit for the sign, 52 bits for the mantissa, and 11 bits for the exponent.   \n
+	
+	The number of bits reserved for the exponent is set by the IEEE floating point standard. \n
 	
 	The IEEE floating point standard: \n
 	
@@ -93,11 +95,13 @@
 		\item Double: 64 bits\n
 	\end{enumerate}
 	
-	\begin{tabular}{c |c | c | c | c}
-		Type & p & $e_{m}$ & $e_{M}$ & $\epsilon_{M}$ \\
-		Single: &24 & -126 & 127 & $~6\times10^{-8}$ \\
-		Double: & 53 & -1022 & 1023 & $~10^{-16}$ \\
+	\begin{tabular}{c | c | c | c | c | c}
+		Type & bits & p & $e_{m}$ (smallest exponent) & $e_{M}$ (largest exponent) & $\epsilon_{\text{Mach}} $ (machine epsilon) \\
+		Single: & 32 & 24 & -126 & 127 & $~6\times10^{-8}$ \\
+		Double: & 64 & 53 & -1022 & 1023 & $~10^{-16}$ \\
 	\end{tabular}
+	
+	The \textit{machine epsilon} is an upper bound on the relative error due to rounding in floating point arithmetic.  It can be calculated using the definition $\epsilon_{Mach}=2^{-p}$, which is half the distance between 1 and the next floating point number. \n  
 	
 	When you have a value such as $\frac{1}{3}$ it cannot be stored exactly in a floating point system so it is rounded.  Round-off error is one of the most important sources of error. \n
 	

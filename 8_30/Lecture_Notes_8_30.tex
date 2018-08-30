@@ -1,0 +1,118 @@
+\documentclass{article}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{tabu}
+\usepackage{hyperref}
+
+\makeatletter
+\def\lecture{\@ifnextchar[{\@lectureWith}{\@lectureWithout}}
+\def\@lectureWith[#1]{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection: #1\@addpunct{.}}%
+		\sectionfont Lecture \thesection. #1\@addpunct{.}}\medbreak}
+\def\@lectureWithout{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection.}%
+		\sectionfont Lecture \thesection.}\medbreak}
+\makeatother
+
+\newcommand{\n}{\newline}
+
+\title{Lectures on Scientific Computing}
+\date{8/30/18}
+\author{Lise-Marie Imbert-Gerard}
+\begin{document}
+	\maketitle
+	
+	\begin{flushleft}
+	\section{Modeling Floating Point Error}
+	Continuing from where we left off last time, review the example in the text.  Remember that each operation generates its own value for error ($\epsilon_{n}$) and that each individual error is less that the machine epsilon, as that is the upper bound of the of the relative error as a function of the machine precision. \n
+	
+	In the end we can see that in the worst case the relative error is $\frac{\hat{x}-x}{x}~-\frac{\epsilon_{d}}{x}$  i.e. the error is amplified by a function of $\frac{1}{x}$ \n
+	 
+	 In the particular case of the catastrophic cancellation that is produced by the function fl($1-\sqrt{1-\delta}$) where $\delta$ is small, we can use the substitution $x=1-\sqrt{(1-\delta)}=\frac{\delta}{1+\sqrt{1-\delta}}$ which eliminated the problem substitution. \n
+	 
+	 \subsection{Exceptions}
+	 
+	 When a floating point operation attempts to calculate a non-zero number that is less than $2^{e_{m}}$ this causes an \textbf{Underflow} problem.  In the calculation the use of denormalized numbers (i.e. $m=0.d_{1}...d_{p-1}$) creates rounding problems.  Rounding denormalized numbers creates \textbf{gradual underflow} and it leads to errors larger than $\epsilon_{M}$.  \n
+	 
+	 A floating point operation generates an exception if the result of the operation cannot be encoded in the floating point system (i.e. is not a normalized floating point number).  The IEEE standard has encodings for two exceptions:  \n
+	 
+	 \begin{enumerate}
+	 	\item $\pm\infty$ 
+	 	\item NotANumber (NaN)\n
+	 \end{enumerate}
+	 
+	 $\infty$ exceptions occur when the result is larger than the largest floating point number that is able to be expressed by the machine.  This is called \textbf{Overflow}.  \n
+	 
+	 NaN exceptions occur when the floating point operation the machine is attempting to perform is invalid. \n
+	 
+	 \subsection{Truncation Error}
+	 
+	 \textbf{Truncating} is neglecting terms in an approximation formula.  This is usually the main source of error in numerical integration or in solving PDEs.  \n
+	 
+	 \textbf{example:}
+	 
+	 If we use the Taylor Expansion of a smooth function we can truncate it after the second term.  i.e. \n
+	 
+	 $f(x)\approx\frac{f(x+h)-f(x)}{h}$\n
+	 
+	 \subsection{Iterative Methods}
+	 
+	 A \textbf{Direct Method} computes the exact answer to a problem assuming exact arithmetic.  In this case the only error you will see is the round-off error, as the arithmetic is exact and only suffers errors produced by the precision of the numbers used.  \n
+	 
+	 An \textbf{Iterative Method} constructs a sequence $A_{n}$ of approximate solutions to $A$ (the exact solution) hoping that it converges to $A$.  i.e. $A_{n}\rightarrow A$ as $n\rightarrow\infty$.  In practice, some $A_{n}$ for $n$ large but finite is the approximated answer.  An example of this is the Newton Method. Another example is the Fixed-Point method\n
+	 
+	 \textbf{Fixed Point Iteration} is defined by $x_{n+1}=\Phi(x_{n})$ to approximate $x=\Phi(x)$.  The properties are such that the sequence must converge and the function must be continuous. \n
+	 
+	\subsection{Error Propagation and Amplification}
+	
+	\textbf{example:\n}
+	
+	Approximation of a derivative:\n
+	
+	$f_{1}:=\hat{f(x)}$ $f_{2}:=\hat{f(x+h)}$ \n
+	$e_{1}=f_{1}-f(x)$ $e_{2}=f_{2}-f(x+h)$ \
+	
+	The derivative is defined by $\frac{f_{2}-f_{1}}{h}$.\n
+	
+	\begin{math}
+		\frac{f_{2}-f_{1}}{h}=\frac{f(x+h)-f(x)}{h}(1+\frac{e_{2}-e_{1}}{f(x+h)-f(x)})
+		\frac{f(x+h)-f(x)}{h}=f'(x)(1+\epsilon_{t})
+		\text{ Where epsilon t is the truncation error.}\n 
+		\hat{f'}=\frac{f_{2}-f_{1}}{h}(1+\epsilon_{r})
+		\rightarrow \hat{f'}=f'(x)(1+\epsilon_{t})(1+\epsilon_{p})(1+\epsilon_{r}) \n
+	\end{math}
+	
+	It is important to realize that the important factor in the total error is the relative sizes of the errors when doing floating point operations.\n
+	
+	An algorithm is \textbf{unstable} if its error mainly comes from amplification.  In scientific computing we use \textbf{Stability Theory} to study the propagation of a small error or small changes by a process, to search for error growth in computation.  You may have already see stability analysis in use on fixed point iterations. \n
+	
+	In a typical stability analysis we try to write a recurrance formula for the error and attempt to find where that formula converges.  In other words, we focus on finding an error propagation equation such that $e_{k+1}=F(e_{k})$ in order to show how $e$ grows as $k$ increases.
+	
+	\subsection{Condition Number and Ill-Conditioned Problems}
+	
+	The \textbf{Condition Number} of a problem measures the sensitivity of the answer with respect to small changes in the input.  The larger the Condition Number, the more sensitive the function is.  Condition Number is usually defined as $\kappa$.  We expect that the relative error will be at lease $\kappa\epsilon_{M}$.  \n
+	
+	An algorithm is unstable if relative errors in the output are much larger that the relative errors in the input.  An ill-conditioned problem is not going to be solved accurately unless it can be reformulated to improve the condition.  For example, $1-\sqrt{1-\delta}=\frac{\delta}{1+\sqrt{1-\delta}}$ \n
+	
+	If the output of your process ($\hat{A}$) is the exact answer to a problem that differs from the original problem only by round-off error in the input then we say that the algorithm is \textbf{Backwards Stable}.  As a consequence, such algorithms cannot be more accurate than the condition number allows, as the error will be exactly dependent on the condition number.  \n
+	
+	\textbf{example: \n}
+	
+	$A(x)=R\sin{x} \rightarrow \kappa(x)=|\cos(x)\frac{x}{\sin{x}}|$\n
+	$x\rightarrow0,\text{ }\kappa~1$\n
+	$x\rightarrow\pi,\text{ }\kappa\rightarrow\infty$\n
+	
+	Therefore, we see this problem is well conditioned around 0 but ill-conditioned around $\pi$. \n
+	
+	There is no perfect definition of condition number for more complicated problems.  
+	
+	 
+	  
+	 
+	\end{flushleft}
+\end{document}

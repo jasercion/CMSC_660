@@ -1,0 +1,297 @@
+\documentclass{article}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{tabu}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{listings}
+\graphicspath{ {./Images/} }
+
+\makeatletter
+\def\lecture{\@ifnextchar[{\@lectureWith}{\@lectureWithout}}
+\def\@lectureWith[#1]{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection: #1\@addpunct{.}}%
+		\sectionfont Lecture \thesection. #1\@addpunct{.}}\medbreak}
+\def\@lectureWithout{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection.}%
+		\sectionfont Lecture \thesection.}\medbreak}
+\makeatother
+
+\newcommand{\n}{\newline}
+
+\title{CMSC 660 HW II}
+\date{9/7/18}
+\author{Joe Asercion}
+\begin{document}
+	\maketitle
+	\section{Chapter 4, Problem 1}
+		\subsection{Calculation}
+		Let $L$ be the differentiation operator which takes $P_{3}$ to $P_{2}$ described in section 4.2.2.  Let $f_{k}=H_{k}(x)$ for $k=0,1,2,3$ be the Hermite Polynomial basis of $P_{3}$ and $g_{k}=H_{k}(x)$ for $k=0,1,2$ be the Hermite Polynomial basis of $P_{2}$.  What is the matrix $A$ that represents this $L$ in these bases?
+		
+		\subsubsection{Answer}
+		
+		First, we note the values of the Probabilist's Hermite Polynomials \cite{BG}(pg. 71)\cite{wiki_hermite} relevant to this problem.  Specifically:
+		
+		\begin{align*}
+			H_{0}&=1 \\
+			H_{1}&=x \\
+			H_{2}&=x^{2}-1 \\ 
+			H_{3}&=x^{3}-3x \\
+		\end{align*}
+
+		Therefore, we can state that the Hermite Polynomial Bases for $P_{3}$ and $P_{2}$ are
+		
+		\begin{center}
+		\begin{tabular}{ c c }
+			$P_{3}$ & $P_{2}$ \\
+			\hline
+			$f_{0}=1$ & $g_{0}=1$ \\
+			$f_{1}=x$ & $g_{1}=x$ \\
+			$f_{2}=x^{2}-1$ & $g_{2}=x^{2}-1$ \\
+			$f_{3}=(x^{3}-3x)$ & 
+		\end{tabular}
+		\end{center}
+		
+		Applying the $f_{k}$ basis to $P_{3}$ yields the expanded polynomial 
+		
+		\begin{center}
+			\begin{equation}
+				P_{3}=p_{0}+p_{1}x+p_{2}(x^{2}-1)+p_{3}(x^{3}-3x)
+			\end{equation}
+		\end{center}
+		
+		This implies that 
+		
+		\begin{center}
+			\begin{align*}
+				AP_{3}&=\frac{d}{dx}(p_{0}+p_{1}x+p_{2}(x^{2}-1)+p_{3}(x^{3}-3x)) \\
+				&=p_{1}+p_{2}(2x)+p_{3}(3(x^{2}-1))
+			\end{align*}
+		\end{center}
+		
+		Expressing this polynomial in terms of a vector of coefficients and the basis $P_{2}$ yields:
+		
+		\begin{center}
+			\begin{equation}
+			AP_{3}[f_{k}] = P_{2}[g_{k}]\rightarrow A
+			\begin{bmatrix} p_{0}\\p_{1}\\p_{2}\\p_{3}\end{bmatrix}
+			\begin{bmatrix} 1 \\ x \\ x^{2}-1 \\ x^{3}-3x \end{bmatrix}=
+			\begin{bmatrix} p_{1}\\2p_{2}\\3p_{3}\end{bmatrix}
+			\begin{bmatrix} 1 \\ x \\ x^{2}-1\end{bmatrix}
+			\end{equation}
+		\end{center}
+		
+		Therefore, we deduce that the matrix A must be 
+		
+		\begin{center}
+			\begin{equation}
+				A= \begin{bmatrix}0&1&0&0\\0&0&2&0\\0&0&0&3\end{bmatrix}
+			\end{equation}
+		\end{center}
+		
+		We can confirm this by applying $A$ to $P_{3}$ then applying $P_{2}$'s basis to verify that the generated polynomial is equivalent to $P_{2}$:
+		
+		\begin{center}
+			\begin{equation}
+				\begin{bmatrix}0&1&0&0\\0&0&2&0\\0&0&0&3\end{bmatrix}
+				\begin{bmatrix}p_{0}\\p_{1}\\p_{2}\\p_{3}\end{bmatrix}=
+				p_{1}+2p_{2}+3p_{3}
+			\end{equation}
+		\end{center}
+		
+		Vectorizing this polynomial and applying the basis for $P_{2}$ yields:
+		
+		\begin{center}
+			\begin{equation}
+				\begin{bmatrix}p_{1}\\2p_{2}\\3p_{3}\end{bmatrix}
+				\begin{bmatrix}1\\x\\x^{2}-1\end{bmatrix}=
+				p_{1}+2xp_{2}+3(x^{2}-1)p_{3} = \frac{d}{dx}(p_{0}+p_{1}x+p_{2}(x^{2}-1)+p_{3}(x^{3}-3x))
+			\end{equation}
+		\end{center}
+	\newpage
+	\section{Chapter 4, Problem 2}
+		Using the following information from the problem:\n
+		\begin{itemize}
+			\item $L$ is a linear transformation from $V\rightarrow V$ 
+			\item $f_{1},...,f_{n}$ and $g_{1},...,g_{n}$ are to bases of $V$
+			\item Any $u\in V$ can be written in a unique was as $u=\sum_{k=1}^{n}v_{k}f_{k}$ or as $u=\sum_{k=1}^{n}w_{k}g_{k}$
+			\item $R$ is an $n\times n$ matrix that relates the $f_{k}$ expansion coefficients $v_{k}$ to the $g_{k}$ coefficients $w_{k}$ by $v_{j}=\sum_{k=1}^{n}r_{jk}w_{k}$ 
+			\item $v=\begin{bmatrix}v_{1}\\.\\.\\.\\v_{k}\end{bmatrix}$ and $w=\begin{bmatrix}w_{1}\\.\\.\\.\\w_{k}\end{bmatrix}$ are related by $v=Rw$
+			\item $A$ represents $L$ in the $f_{k}$ basis and $B$ represents $L$ in the $g_{k}$ basis
+		\end{itemize}
+		\subsection{a. Proof}
+		Show that $B=R^{-1}AR$.
+		
+		\subsubsection{Answer}
+		
+		Because $R$ is an invertible matrix (as evidenced by the problem statement) we can use the property $AA^{-1}=I$ to rewrite the function in a way that eliminates the inversion:
+		
+		\begin{align*}
+			B&=R^{-1}AR\\
+			RB&=RR^{-1}AR\\
+		\end{align*}
+		\begin{equation}
+		RB=AR
+		\end{equation}
+		
+		Examining the left side of equation (6), we rewrite the expression using the notation from the HW:
+		
+		\begin{align*}
+			RB&=R_{\mathcal{G}}[L]_{\mathcal{G}}\\
+		\end{align*}
+		
+		Since $R$ directly express the expansion coefficients in the $f_{k}$ basis to the coefficients in the $g_k$ basis, we can write
+		
+		\begin{align*}
+			RB&=R_{\mathcal{G}}[L]_{\mathcal{G}}=_{\mathcal{F}}[L]_{\mathcal{F}} \\
+			\therefore R^{-1}RB&=R^{-1} _{\mathcal{F}}[L]_{\mathcal{F}}\\
+			\therefore B&=R^{-1} _{\mathcal{F}}[L]_{\mathcal{F}}
+		\end{align*}
+		
+		Examining the right side of equation (6) and expressing it in the HW notation:
+		
+		\begin{align*}
+			AR&=_{\mathcal{F}}[L]_{\mathcal{F}}R
+		\end{align*}
+		
+		%Come back to this
+
+		\subsection{b. Calculation}
+		For $V=P_{3}$, $f_{k}=x^{k}$ and $g_{k}=H_{k}$ find R.
+		
+		\subsubsection{Answer}
+		
+		In this case, we are examining an arbitrary vector in $V$, expressed as $\begin{bmatrix} p_{0}\\p_{1}\\p_{2}\\p_{3}\end{bmatrix}$, in two different bases:
+		
+		\begin{align*}
+			\begin{bmatrix}p_{0}\\p_{1}x\\p_{2}x^{2}\\p_{3}x^{3}\end{bmatrix}(\text{in the f basis})\\
+			\&\\
+			\begin{bmatrix}p_{0}\\p_{1}x\\p_{2}(x^{2}-1)\\p_{3}(x^{3}-3x)\end{bmatrix}(\text{in the g basis})
+		\end{align*}
+		
+		We are given the relation that $v=Rw$ from the problem, therefore
+		
+		\begin{align*}
+			\begin{bmatrix}p_{0}\\p_{1}x\\p_{2}x^{2}\\p_{3}x^{3}\end{bmatrix}&=R\begin{bmatrix}p_{0}\\p_{1}x\\p_{2}(x^{2}-1)\\p_{3}(x^{3}-3x)\end{bmatrix}
+		\end{align*}
+		
+		Which allows us to deduce that $R$ must be 
+		
+		\begin{align*}
+			R=
+			\begin{bmatrix}
+				1 & 0 & 0 & 0\\
+				0 & 1 & 0 & 0\\
+				1 & 0 & 1 & 0 \\
+				0 & 3 & 0 & 1
+			\end{bmatrix}
+		\end{align*}
+		
+		\subsection{c. Calculation}
+		
+		If $L$ is the linear transformation $Lp=q$ with $q(x)=\delta_{x}(xp(x))$ find the matrix $A$ that represents $L$ in the monomial basis $f_{k}$.
+		
+		\subsubsection{Answer}
+		
+		Inserting the given values into the given transformation expression yields
+		
+		\begin{align*}
+			A(p_{0}+p_{1}x+p_{2}x^{2}+p_{3}x^{3})&=\delta_{x}(xp(x))\\
+			A(p_{0}+p_{1}x+p_{2}x^{2}+p_{3}x^{3})&=\delta_{x}(p_{0}x+p_{1}x^2+p_{2}x^{3}+p_{3}x^{4})\\
+			A(p_{0}+p_{1}x+p_{2}x^{2}+p_{3}x^{3})&=p_{0}+2p_{1}x+3p_{2}x^2+4p_{3}x^{3}
+		\end{align*}
+		
+		Therefore we deduce that the matrix $A$ must be 
+		\begin{align*}
+		A=
+		\begin{bmatrix}
+			1 & 0 & 0 & 0\\
+			0 & 2 & 0 & 0\\
+			0 & 0 & 3 & 0\\
+			0 & 0 & 0 & 4
+		\end{bmatrix}
+		\end{align*}
+		\subsection{d. Calculation}
+		
+		Find the matrix $B$ that represents $L$ in the Hermite polynomial basis $H_{k}$
+				
+		\subsubsection{Answer}
+		We perform the same steps as in part c:
+		
+		\begin{align*}
+		B(p_{0}+p_{1}x+p_{2}(x^{2}-1)+p_{3}(x^{3}-3x))&=\delta_{x}(xp(x))\\
+		B(p_{0}+p_{1}x+p_{2}(x^{2}-1)+p_{3}(x^{3}-3x))&=\delta_{x}(p_{0}x+p_{1}x^2+p_{2}(x^{3}-x)+p_{3}(x^{4}-3x^2))\\
+		B(p_{0}+p_{1}x+p_{2}(x^{2}-1)+p_{3}(x^{3}-3x))&=p_{0}+2p_{1}x+p_{2}(3x^2-1)+p_{3}(4x^{3}-6x)
+		\end{align*}
+		
+		Therefore we deduce that the matrix $B$ must be 
+		\begin{align*}
+		B=
+		\begin{bmatrix}		
+		1 & 0 & 0 & 0 \\
+		0 & 2 & 0 & 0 \\
+		2 & 0 & 3 & 0\\
+		0 & 6 & 0 & 4
+		\end{bmatrix}
+		\end{align*}
+		
+		\subsection{e. Calculation}
+		
+		Multiply the matrices to check explicitly that $B=R^{-1}AR$ in this case.
+		
+		\subsubsection{Answer}
+		
+		\begin{align*}
+		R^{-1}&=
+		\begin{bmatrix}
+		1 & 0 & 0 & 0\\
+		0 & 1 & 0 & 0\\
+		-1 & 0 & 1 & 0 \\
+		0 &-3 & 0 & 1
+		\end{bmatrix}\\
+		\therefore R^{-1}AR &=
+		\begin{bmatrix}
+		1 & 0 & 0 & 0\\
+		0 & 1 & 0 & 0\\
+		-1 & 0 & 1 & 0 \\
+		0 &-3 & 0 & 1
+		\end{bmatrix}
+		\begin{bmatrix}
+		1 & 0 & 0 & 0\\
+		0 & 2 & 0 & 0\\
+		0 & 0 & 3 & 0\\
+		0 & 0 & 0 & 4
+		\end{bmatrix}
+		\begin{bmatrix}
+		1 & 0 & 0 & 0\\
+		0 & 1 & 0 & 0\\
+		1 & 0 & 1 & 0 \\
+		0 &3 & 0 & 1
+		\end{bmatrix}\\
+		&=\begin{bmatrix}
+		1 & 0 & 0 & 0\\
+		0 & 2 & 0 & 0 \\
+		2 & 0 & 3 & 0 \\
+		0 & 6 & 0 & 4
+		\end{bmatrix}		
+		\end{align*}
+		
+		Which is equal to our calculated value for matrix $B$.
+		
+		
+\begin{thebibliography}{2}
+	\bibitem{BG}
+	David Bindel and Johnathan Goodman.
+	\textit{Principles of Scientific Computing}. 
+	2009.
+	\bibitem{wiki_hermite}
+	Hermite Polynomials Wikipedia Page
+	\\\texttt{https://en.wikipedia.org/wiki/Hermite\_polynomials}
+\end{thebibliography}
+\end{document}

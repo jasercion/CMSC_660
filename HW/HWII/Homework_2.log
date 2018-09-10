@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  10 SEP 2018 14:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  10 SEP 2018 17:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -439,19 +439,26 @@ Overfull \hbox (29.99596pt too wide) in paragraph at lines 231--231
  []
 
 [5] [6]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 357.
- [7]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 357.
+Overfull \hbox (68.82689pt too wide) in paragraph at lines 343--353
+\OT1/cmr/m/n/10 The stan-dard ba-sis of $\U/msb/m/n/10 R[]$ \OT1/cmr/m/n/10 ex-
+pressed as an $\OML/cmm/m/it/10 n \OMS/cmsy/m/n/10 ^^B \OML/cmm/m/it/10 n$ \OT1
+/cmr/m/n/10 ma-trix is $\OML/cmm/m/it/10 u \OT1/cmr/m/n/10 = []$ 
+ []
+
+[7]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 382.
+ [8]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 382.
  (./Homework_2.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 357.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 357.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 382.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 382.
 Package rerunfilecheck Info: File `Homework_2.out' has not changed.
 (rerunfilecheck)             Checksum: 5E19B01A257C997EEF91E57FEE3025F2;1971.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 357.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 382.
  ) 
 Here is how much of TeX's memory you used:
- 8141 strings out of 493089
- 117521 string characters out of 6134842
+ 8142 strings out of 493089
+ 117527 string characters out of 6134842
  216870 words of memory out of 5000000
  11486 multiletter control sequences out of 15000+600000
  12017 words of font info for 47 fonts, out of 8000000 for 9000
@@ -472,10 +479,10 @@ ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texli
 ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texliv
 e/2015/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/te
 xlive/2015/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Homework_2.pdf (7 pages, 167330 bytes).
+Output written on Homework_2.pdf (8 pages, 170191 bytes).
 PDF statistics:
- 253 PDF objects out of 1000 (max. 8388607)
- 226 compressed objects within 3 object streams
- 50 named destinations out of 1000 (max. 500000)
+ 262 PDF objects out of 1000 (max. 8388607)
+ 234 compressed objects within 3 object streams
+ 51 named destinations out of 1000 (max. 500000)
  257 words of extra memory for PDF output out of 10000 (max. 10000000)
 

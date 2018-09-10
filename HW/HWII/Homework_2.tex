@@ -310,32 +310,57 @@
 		
 	\section{Chapter 4: Questions}
 		\subsection{Definition}
-		Define a 'real vector space.
+		Define a 'real vector space'.
 		
 		\subsubsection{Answer}
+		As noted in B\&G, a real vector space denoted by $\mathbb{R}^{n}$ consists of one or more column vectors with $n$ components: $u=\begin{bmatrix}
+		u_{0}\\
+		.\\
+		.\\
+		.\\
+		u_{n}
+		\end{bmatrix}$ with each arbitrary $u_{n}\in\mathbb{R}$.  
+		As with Complex Vector Spaces, these vectors can be scaled or added component-wise \cite{BG}(pg.69).  
+		
 		
 		\subsection{Proof}
 		Is $V':={u\in\mathbb{R}^{n},\sum_{k=1}^{n}u_{k}=0}$ a subspace of $\mathbb{R}^{n}$?  Provide a proof of your assertion.	
 		
 		\subsubsection{Answer}
 		
+		Yes.  As noted in \cite{BG}(pg.69), this vector space is closed under vector addition or scalar multiplication and is therefore a subspace of $\mathbb{R}^{n}$.
+		
 		\subsection{Proof}
 		Is $V':={u\in\mathbb{R}^{n},\sum_{k=1}^{n}u_{k}=1}$ a subspace of $\mathbb{R}^{n}$?  Provide a proof of your assertion.	
 			
 		\subsubsection{Answer}
+		No.  As noted in \cite{BG}(pg. 69) this vector space is not closed under vector addition or scalar multiplication and is therefore not a subspace of $\mathbb{R}^{n}$.  This can be disproven by noting that the by the definition of the subspace the addition of any two vectors within
 		
 		\subsection{Definition}
 		What is the standard basis of $\mathbb{R}^{n}$?
 		
 		\subsubsection{Answer}
+		The standard basis of $\mathbb{R}^{n}$ expressed as an $n\times n$ matrix is $u=\begin{bmatrix}
+		1 & 0 & . & . & . & u_{0,n}=0\\
+		0 & 1 & 0 & . & . & 0\\
+		0 & 0 & 1 & 0 & . & 0\\
+		0 & . & 0 & 1 & 0 & 0 \\
+		. & . & . & . & . & . \\
+		. & . & . & . & . & . \\
+		. & . & . & . & . & . \\
+		u_{n,0}=0 & 0 & . & . & 0 & u_{n,n}=1
+		\end{bmatrix}$
 		
+		i.e. a diagonal matrix where all diagonal components are equal to one and all off diagonal components are equal to zero.\cite{BG}(pg. 70)
 		\subsection{Definition}
 		What is the standard inner product of $\mathbb{R}^{n}$?
 		
 		\subsubsection{Answer}
+		From equation (4.2)\cite{BG}, the standard inner product of two vectors in $\mathbb{R}^{n}$ is 
+		
 		
 		\subsection{Proof}
-		Probe that the space of polynomials with real coefficients is a vector space.
+		Prove that the space of polynomials with real coefficients is a vector space.
 		
 		\subsubsection{Answer}
 		

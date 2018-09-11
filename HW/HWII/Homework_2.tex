@@ -26,7 +26,7 @@
 \newcommand{\n}{\newline}
 
 \title{CMSC 660 HW II}
-\date{9/7/18}
+\date{9/10/18}
 \author{Joe Asercion}
 \begin{document}
 	\maketitle
@@ -87,7 +87,7 @@
 			\end{equation}
 		\end{center}
 		
-		Therefore, we deduce that the matrix A must be 
+		Therefore, we calculate that the matrix A must be 
 		
 		\begin{center}
 			\begin{equation}
@@ -140,28 +140,27 @@
 		RB=AR
 		\end{equation}
 		
-		Examining the left side of equation (6), we rewrite the expression using the notation from the HW:
+		Multiplying both sides of the expression by vector $w=[u]_{\mathcal{G}}$ yields:
 		
-		\begin{align*}
-			RB&=R_{\mathcal{G}}[L]_{\mathcal{G}}\\
-		\end{align*}
-		
-		Since $R$ directly express the expansion coefficients in the $f_{k}$ basis to the coefficients in the $g_k$ basis, we can write
-		
-		\begin{align*}
-			RB&=R_{\mathcal{G}}[L]_{\mathcal{G}}=_{\mathcal{F}}[L]_{\mathcal{F}} \\
-			\therefore R^{-1}RB&=R^{-1} _{\mathcal{F}}[L]_{\mathcal{F}}\\
-			\therefore B&=R^{-1} _{\mathcal{F}}[L]_{\mathcal{F}}
-		\end{align*}
-		
-		Examining the right side of equation (6) and expressing it in the HW notation:
-		
-		\begin{align*}
-			AR&=_{\mathcal{F}}[L]_{\mathcal{F}}R
-		\end{align*}
-		
-		%Come back to this
+		\begin{equation}
+			RBw=ARw
+		\end{equation}
 
+		Examining the right side of equation (7), we note that we can apply the relation $v=Rw$:
+		
+		\begin{align*}
+			ARw&=A(Rw) \\
+			&=Av
+		\end{align*}
+		
+		Examining the left side of equation (7), we note that, because $R$ directly relates coefficients in the $w$ basis to the $v$ basis,
+		
+		\begin{align*}
+			RBw&=R(Bw)\\
+			&=Av
+		\end{align*}
+		
+		We can now see that both sides of equation (7) can be expressed as $Av$, therefore, $B=R^{-1}AR$.
 		\subsection{b. Calculation}
 		For $V=P_{3}$, $f_{k}=x^{k}$ and $g_{k}=H_{k}$ find R.
 		
@@ -181,7 +180,7 @@
 			\begin{bmatrix}p_{0}\\p_{1}x\\p_{2}x^{2}\\p_{3}x^{3}\end{bmatrix}&=R\begin{bmatrix}p_{0}\\p_{1}x\\p_{2}(x^{2}-1)\\p_{3}(x^{3}-3x)\end{bmatrix}
 		\end{align*}
 		
-		Which allows us to deduce that $R$ must be 
+		Which allows us to calculate that $R$ must be 
 		
 		\begin{align*}
 			R=
@@ -207,7 +206,7 @@
 			A(p_{0}+p_{1}x+p_{2}x^{2}+p_{3}x^{3})&=p_{0}+2p_{1}x+3p_{2}x^2+4p_{3}x^{3}
 		\end{align*}
 		
-		Therefore we deduce that the matrix $A$ must be 
+		Therefore we calculate that the matrix $A$ must be 
 		\begin{align*}
 		A=
 		\begin{bmatrix}
@@ -230,7 +229,7 @@
 		B(p_{0}+p_{1}x+p_{2}(x^{2}-1)+p_{3}(x^{3}-3x))&=p_{0}+2p_{1}x+p_{2}(3x^2-1)+p_{3}(4x^{3}-6x)
 		\end{align*}
 		
-		Therefore we deduce that the matrix $B$ must be 
+		Therefore we calculate that the matrix $B$ must be 
 		\begin{align*}
 		B=
 		\begin{bmatrix}		
@@ -294,20 +293,82 @@
 		
 		\subsubsection{Answer}
 		
-		To find the adjoint of a matrix we must first calculate the matrix of cofactors then take the inverse of that matrix.
+		To find the adjoint of a matrix we first take the complex conjugate of each element then take the transpose of the resulting matrix.\cite{BG}(pg. 74)
 		
-		Starting with the left hand side of equation (7), we can express matrix $AB$ generally as:
+		Starting with the left hand side of equation (8), we calculate the general form of matrix $C:=AB$:
 		
-		\begin{align*}AB =
+		\begin{align*}
+		C=
 			\begin{bmatrix}
-			(AB)_{0,0}&.&.&.&(AB)_{0,l}\\
-			.&.&.&.&.\\
-			.&.&.&.&.\\
-			.&.&.&.&.\\
-			(AB)_{n,0}&.&.&.&(AB)_{n,l}
+			\sum_{k=1}^{m}a_{1,k}b_{k,1}&...&\sum_{k=1}^{m}a_{1,k}b_{k,l}\\
+			...&...&...\\
+			sum_{k=1}^{m}a_{n,k}b_{k,1}&...&\sum_{k=1}^{m}a_{n,k}b_{k,l}\\
 			\end{bmatrix}
 		\end{align*}
 		
+		Therefore,
+		
+		\begin{align*}
+			C^{*}&=\Bigg(
+				\begin{bmatrix}
+				\overline{\sum_{k=1}^{m}a_{1,k}b_{k,1}}&...&\overline{\sum_{k=1}^{m}a_{1,k}b_{k,l}}\\
+				...&...&...\\
+				\overline{\sum_{k=1}^{m}a_{n,k}b_{k,1}}&...&\overline{\sum_{k=1}^{m}a_{n,k}b_{k,l}}\\
+				\end{bmatrix}\Bigg)^{T}\\
+				&=
+				\begin{bmatrix}
+				\overline{\sum_{k=1}^{m}a_{1,k}b_{k,1}}&...&\overline{\sum_{k=1}^{m}a_{n,k}b_{k,1}}\\
+				...&...&...\\
+				\overline{\sum_{k=1}^{m}a_{1,k}b_{k,l}}&...&\overline{\sum_{k=1}^{m}a_{n,k}b_{k,l}}\\
+				\end{bmatrix}
+		\end{align*}
+		
+		Examining the right hand side of equation (8), 
+		
+		\begin{align*}
+			B^*&=
+			\Bigg(
+			\begin{bmatrix}
+			\overline{b_{1,1}}&...&\overline{b_{1,l}}\\
+			...&...&...\\
+			\overline{b_{m,1}}&...&\overline{b_{m,l}}
+			\end{bmatrix}
+			\Bigg)^{T}\\
+			&=
+			\begin{bmatrix}
+			\overline{b_{1,1}}&...&\overline{b_{m,1}}\\
+			...&...&...\\
+			\overline{b_{1,l}}&...&\overline{b_{m,l}}
+			\end{bmatrix}
+		\end{align*}
+
+		\begin{align*}
+		A^*&=
+		\Bigg(
+		\begin{bmatrix}
+		\overline{a_{1,1}}&...&\overline{a_{1,m}}\\
+		...&...&...\\
+		\overline{a_{n,1}}&...&\overline{a_{n,m}}
+		\end{bmatrix}
+		\Bigg)^{T}\\
+		&=
+		\begin{bmatrix}
+		\overline{a_{1,1}}&...&\overline{a_{n,1}}\\
+		...&...&...\\
+		\overline{a_{1,m}}&...&\overline{a_{n,l}}
+		\end{bmatrix}
+		\end{align*}		
+		
+		\begin{align*}
+			\therefore B^*A^*=
+			\begin{bmatrix}
+			\sum_{k=1}^{m}\overline{a_{1,k}}\overline{b_{k,1}}&...&\sum_{k=1}^{m}\overline{a_{n,k}}\overline{b_{k,1}}\\
+			...&...&...\\
+			\sum_{k=1}^{m}\overline{a_{1,k}}\overline{b_{k,l}}&...&\sum_{k=1}^{m}\overline{a_{n,k}}\overline{b_{k,l}}
+			\end{bmatrix}
+		\end{align*}
+		
+		Because $\overline{ab}=\overline{a}\overline{b}$, we see that, in fact, $(AB)^{*}=A^{*}B^{*}$.
 	\section{Chapter 4: Questions}
 		\subsection{Definition}
 		Define a 'real vector space'.
@@ -334,7 +395,7 @@
 		Is $V':={u\in\mathbb{R}^{n},\sum_{k=1}^{n}u_{k}=1}$ a subspace of $\mathbb{R}^{n}$?  Provide a proof of your assertion.	
 			
 		\subsubsection{Answer}
-		No.  As noted in \cite{BG}(pg. 69) this vector space is not closed under vector addition or scalar multiplication and is therefore not a subspace of $\mathbb{R}^{n}$.  This can be disproven by noting that the by the definition of the subspace the addition of any two vectors within
+		No.  As noted in \cite{BG}(pg. 69) this vector space is not closed under vector addition or scalar multiplication and is therefore not a subspace of $\mathbb{R}^{n}$.  This can be proved by noting that the by the definition of the subspace the addition of any two vectors within the subspace must equal 2.  This is outside the vector space, therefore  $V':={u\in\mathbb{R}^{n},\sum_{k=1}^{n}u_{k}=1}$ is not closed under addition.
 		
 		\subsection{Definition}
 		What is the standard basis of $\mathbb{R}^{n}$?
@@ -358,17 +419,22 @@
 		\subsubsection{Answer}
 		From equation (4.2)\cite{BG}, the standard inner product of two vectors in $\mathbb{R}^{n}$ is 
 		
+		\begin{align*}
+			<u,v>=\sum_{k=1}^{n}u_{k}v_{k}
+		\end{align*}
+		
 		
 		\subsection{Proof}
 		Prove that the space of polynomials with real coefficients is a vector space.
 		
 		\subsubsection{Answer}
+		Because $\mathbb{R}$ is closed under multiplication and addition, the space of polynomials with coefficients$\in\mathbb{R}$ must also be closed.  Therefore this set can be considered a vector space.
 		
 		\subsection{Concept}
 		If $A$ is a real matrix, what is the difference between its transpose and its adjoint?
 		
 		\subsubsection{Answer}
-		
+		There is no difference.  As defined in \cite{BG} (pg.74), the adjoint of a matrix is the transpose of the complex conjugate of its components.  For matrices where every element $\in\mathbb{R}^{n}$, there is no imaginary component of the element.  Therefore, $A^{T}=A^{*},\text{ }A\in\mathbb{R}^{n}$
 		
 \begin{thebibliography}{2}
 	\bibitem{BG}

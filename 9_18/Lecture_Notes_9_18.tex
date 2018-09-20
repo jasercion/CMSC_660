@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{tabu}
+\usepackage{hyperref}
+
+\makeatletter
+\def\lecture{\@ifnextchar[{\@lectureWith}{\@lectureWithout}}
+\def\@lectureWith[#1]{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection: #1\@addpunct{.}}%
+		\sectionfont Lecture \thesection. #1\@addpunct{.}}\medbreak}
+\def\@lectureWithout{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection.}%
+		\sectionfont Lecture \thesection.}\medbreak}
+\makeatother
+
+\newcommand{\n}{\newline}
+
+\title{Lectures on Scientific Computing}
+\date{9/18/18}
+\author{Lise-Marie Imbert-Gerard}
+\begin{document}
+	\maketitle
+	\section{Building a basis of eigenvectors}
+	(Variational Principles for the Symmetric Eigenvalue Problem)
+	\subsection{Step 1}
+	Since $x\in C^{m}, ||x||=1$ is compact, $\omega$ with $||\omega=1$ such $Q(\omega)=maxQ(x)$, $||x||=1$.\n
+	$\rightarrow \nabla Q(r)=0$\n
+	$Ar=Q(\omega)\omega$
+	\begin{flushleft}
+	\textbf{Iteration: \n}
+	\textbf{Remark: } If $\omega_{j}^{*}=0$ then $\omega_{j}^{*}(Ax)=(A^{*}\omega_{j})^{*}x$ \n
+	$=(A\omega_{j})^{*}x$ since $A^{+}=A$
+	Suppose $\omega_{1},...,\omega_{m}$ are orthogonal eigenvectors of $A$.  If 
+	\end{flushleft}
+	
+	\section{Least Square Method}
+	
+	For this method we are only going to be looking at real matrices ($\in\mathbb{R}$).  Assume that $A\in\mathbb{R}^{m\times n}$, $b\in\mathbb{R}^{m}$, where $Ax=b$. \n
+	\textbf{Definition: \n} If $n<m$, the linear system $Ax=b$ is \textbf{overdetermined}.  The idea is that we have too many constraints to find the unknown, so there might not be an $x$ that satisfies exactly $Ax=b$.  We define the \textbf{Residual} as what remains when we look at the difference $\omega:=Ax-b$.  i.e. we might not be able to find an exact solution but we can find something that has a small residual $\omega$.  The \textbf{Least Square Problem} is to minimize the residual.  Formally, we are looking for $min_{x}||Ax-b||_{l^{2}}$ (the $l^{2}$ norm of the residual).  \n
+	
+	\textbf{Remark:} $||\omega||_{l^{2}}^{2}=\sum_{i=1}^{m}\omega_{i}^{2}$.  This is used in linear regression in statistics.  $||\omega||^{2}_{l^{2}}=(Ax-b)^{*}(Ax-b)=x^{*}A^{*}Ax-2x^{*}A^{*}b+b^{*}b(2)$.\n
+	
+	\textbf{Definition: } The \textbf{normal equations} are $A^{*}Ax=A^{*}b$.  $A^{*}A$ is called either the \textbf{moment matrix} or the \textbf{Gram matrix}.  \n
+	
+	\textbf{Remark: }$A^{*}A$ is symmetric, if $A$ is of rank $n$ ($rnk(A)=n$), which is the maximum rank it can have, then $A^{*}A$ is positive definite so the Choshi decomposition is a good way to solve $A^{*}Ax=A^{*}b$.\n
+	
+	\textbf{Definition: } We define the pseudo-inverse of $A$ as $(A^{*}A)^{-1}A^{*}$.  This is only possible when $rnk(A)=m$.  Finally, one important thing to note is that there are problems with conditioning in $Ax=b$ and $A^{*}Ax=A^{*}b$  This 'normal equation' approach is the fastest way to solve tense least-square problems but it is often not suitable in practice because of ill conditioning.  It only works well if the initial problem $Ax=b$ is well-condition.
+	
+	\section{Alternatives to LSM}
+	
+	\subsection{Singular Values and Principle Components}
+	
+	\textbf{Theorem: }If you have a matrix you can break it down in the following way.  Let $A\in\mathbb{R}^{m\times n}$.  The \textbf{Singular Value Decomposition} of $A$ is a factorization of the form $A=U\Sigma V^{*}$ where $U$ is an $m\times n$ orthogonal matrix ($U^{T}U=I$), $\Sigma$ is an $m\times n$ diagonal matrix ($\sum_{ij}=0$) iff $i\neq j$, and $V$ is an $n\times m$ orthogonal matrix ($V^{T}V=I$).  \n
+	
+	\textbf{Definition: }The diagonal values of $\Sigma\{\sigma_{j}\}_{1\leq j\leq min(m,n)}$ are called the singular values of $A$.  The columns $\{u_{j}\}_{1\leq j \leq m}$ of U are the left singular vectors of $A$.  By convention $\sigma_{j}\geq \sigma_{2},...\geq 0$, $\sigma_{k}=0$ if $k>min(m,n)$.\n
+	
+	Construction of U and V:  Suppose $A\neq 0$.\n
+	
+	\subsubsection{Step 1}
+	
+	We want to find $\sigma_{1},v_{1}$, and $u_{1}$.  $\sigma{1}$ is the largest singular value of $A$.  We define this as $\sigma_{1}:=max_{x\neq0}\frac{||Ax||}{||x||}=max_{||x||=1}||A_{x}||>0$\n
+	
+	We can now define the vector $v_{1}$.  $\exists v_{1}$ such that $||v_{1}||=1$ and $||Av_{1}||=\sigma_{1}>0$\n
+	
+	We can now define $u_{1}:=\frac{Av_{1}}{||Av_{1}||}\rightarrow Av_{1}=\sigma_{1}u_{1}$\n
+	
+	\textbf{Remarks: }The \textbf{Optimality Condition} $\sigma_{1}^{2}=max_{x\neq0}\frac{x^{*}A^{*}Ax}{x^{*}x}$.  The denominator is the Rayleigh Quotient of the matrix $A^{*}A$.  Therefore with $\sigma_{1}^{2}=v_{1}^{*}A^{*}Av_{1}$, $||v_{1}||=1$ so what remains is that $\sigma_{1}=v_{1}^{*}A^{*}u_{1}$.  We want to obtain $\sigma_{1}v_{1}=A^{*}u_{1}$ (prove this is true).\n
+	
+	$\sigma_{1}^{2}=v_{1}^{*}A^{*}Av_{1}$, $||v_{1}||=1$\n
+	$\rightarrow \sigma_{1}^{2}v_{1}=A^{*}(Av_{1})$, $\sigma_{1}\neq0$\n
+	$\rightarrow \sigma_{1}v_{1}=A^{*}u_{1}$\n
+	$\sigma_{1}v_{1}^{*}=u_{1}^{*}A$\n
+	$\therefore \sigma_{1}v_{1}^{*}=u_{1}^{*}A$
+	
+	\textbf{The Orthogonality Principle:} $(Ax)^{*}u_{1}=x^{*}(A^{*}u_{1})=\sigma_{1}x^{*}v_{1}$ so $x^{*}v_{1}=0\rightarrow(Ax)^{*}u_{1}=0$
+	
+	\subsubsection{Step 2}
+	
+	$V_{1}:=\{x\in\mathbb{R}^{n},x^{*}v_{1}=0\}$\n
+	$V_{1}:=\{x\in\mathbb{R}^{m},x^{*}u_{1}=0\}$\n
+	
+	If $A_{1}$ is not identically 0, we can define $\sigma_{2}:=\max_{x\in v_{1}, x\neq0} \frac{||Ax||}{||x||}=max_{x}$
+	
+ \end{document}

@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{tabu}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{listings}
+\graphicspath{ {./Images/} }
+
+\makeatletter
+\def\lecture{\@ifnextchar[{\@lectureWith}{\@lectureWithout}}
+\def\@lectureWith[#1]{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection: #1\@addpunct{.}}%
+		\sectionfont Lecture \thesection. #1\@addpunct{.}}\medbreak}
+\def\@lectureWithout{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection.}%
+		\sectionfont Lecture \thesection.}\medbreak}
+\makeatother
+
+\newcommand{\n}{\newline}
+
+\title{CMSC 660 HW III}
+\date{9/19/18}
+\author{Joe Asercion}
+\begin{document}
+	\maketitle
+	\section{Chapter 4, Problem 11}
+	Given the following information:
+	\begin{itemize}
+		\item $\frac{1}{2}\delta_{x}^{2}u=f(x)$ for $0<x<1$ 
+		\item Boundary Conditions: $u(0)=u(1)=0$
+		\item Discretized interval: $[0,1]$ in a uniform grid of points $x_{j}=j\Delta x$ with $n\Delta x=1$
+		\item  $n-1$ unknowns $U_{j}$ are approximations to $u(x_{j}),\text{ }j=1,...,n-1$
+		\item Second order approximation: $\frac{1}{2}\frac{1}{\Delta x^{2}}(U_{j+1}-2U_{j}+U_{j-1})=f(x_j)=F_j$\\
+		\item These linear equations can be written as $AU=F$
+	\end{itemize}
+	\subsection{a. Calculation}
+	Check that there are $n-1$ distinct eigenvectors of $A$ having the form $r_{kj}=\sin(k\pi x_{j})$ where $r_{kj}$ is the $j$ component of the eigenvector $r_{k}$.
+	\subsubsection{Answer}
+	
+\end{document}

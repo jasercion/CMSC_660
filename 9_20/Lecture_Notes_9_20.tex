@@ -1,0 +1,143 @@
+\documentclass{article}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{tabu}
+\usepackage{hyperref}
+
+\makeatletter
+\def\lecture{\@ifnextchar[{\@lectureWith}{\@lectureWithout}}
+\def\@lectureWith[#1]{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection: #1\@addpunct{.}}%
+		\sectionfont Lecture \thesection. #1\@addpunct{.}}\medbreak}
+\def\@lectureWithout{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection.}%
+		\sectionfont Lecture \thesection.}\medbreak}
+\makeatother
+
+\newcommand{\n}{\newline}
+
+\title{Lectures on Scientific Computing}
+\date{9/20/18}
+\author{Lise-Marie Imbert-Gerard}
+\begin{document}
+	\maketitle
+	\section{Continuing from last time...(Step 1)}
+	\begin{align*}
+		&\sigma_{1}:=max_{x\neq 0}\frac{||Ax||}{||x||}>0\\
+		&v_{1} \text{such that }||v_{1}||=1, \text{ }||Av_{1}||=\sigma_{1}>0\\
+		u_{1}:=\frac{Av_{1}}{||Av_{1}||}
+	\end{align*}
+	\section{Step 2}
+	\begin{align*}
+	&v_{1}=\{x\in\mathbb{R}^{m},x^{*}v_{1}=0\}\\
+	&u_{1}=\{x\in\mathbb{R}^{m},v^{*}u_{1}=0\}\\
+	&A_{1}:=v_{1}\rightarrow u_{1}\\
+	&x\rightarrow Ax
+	\end{align*}
+	Suppose $A_{1}\neq0$...\n
+	\begin{align*}
+		\sigma_{2}:=max_{x\in v_{1}}\frac{||Ax||}{||x||}\\
+		v_{2} \text{such that }||v_{2}||=1,||Av_{2}||=\sigma_{2}\\
+		u_{2}:=\frac{Av_{2}}{||Av_{2}||}
+	\end{align*}
+	Continue until $A_{k}=0$ or $k=m$ or $k=n$.  Set all remaining $\sigma_{h}$ to and complete $\{u_{j}\},\{v_{j}\}$ into orthogonal bases.\n
+
+	We have build $A=U\Sigma V^{*}$ so $A^{*}A=V\Sigma^{*}\Sigma V^{*}$.  The eigenvalues of $A^{*}A$ are $\lambda k=\sigma_{k}^{2}$ and the eigenvector of $A^{*}A$ are $v_{k}$.  We will see that $kl^{2}=\frac{\sigma_{1}(A)}{\sigma_{m}(A)}\rightarrow kl^{2}(A^{*}A)=kl^{2}(A)^2$.  This has applications in \textbf{Principle Component Analysis} in identifying clusters.
+
+	\section{Condition Number}
+	$\mathbb{K}=\mathbb{R}$ or $\mathbb{C}$.  Suppose $f\mathbb{K}^{n}\rightarrow\mathbb{K}^{n}$.  Remember that $\Delta f=f(x+\Delta x)-f(x)$. \n
+	
+	\textbf{Definition:\n}
+	
+	$\mathbb{K}(n)=\lim_{\epsilon\rightarrow0}max_{||\Delta x||=\epsilon}\frac{||f(x+\Delta x)-f(x)||/||f||}{||\Delta x||/||x||}_{\mathbb{R}}$\n
+	$R=\frac{||\Delta f||}{||f||}\frac{||x||}{||f||}=\frac{||f'(x)\Delta x||}{||\Delta x||}\frac{||x||}{||f||}+O(||\Delta x||)$\n
+	$f'(x)$ is the Jacobian of f at x.  Therefore, $\mathbb{K}(x)=||f'(x)||\frac{||x||}{||f(x)||}$.\n
+	
+	\textbf{Remark: \n}
+	If $P,Q\in R^{t}$ we say that $C>0$ is a \textbf{Sharp Constant} for $P\leq CQ$ if $C'>0$ such that $C'<C$ and $P\leq C'Q$.\n
+	
+	\textbf{Definition:\n}
+	We write $P(\epsilon)<CQ(\epsilon)$ as $\epsilon\rightarrow0$ if $P(\epsilon)>0$, $Q(\epsilon)>0$, $\lim_{\epsilon\rightarrow0}\frac{P(\epsilon)}{Q(\epsilon)}\leq C$.  We say that $C$ is sharp as $\epsilon\rightarrow 0$ if it is an identity.  The consequence of this is that $K(x)$ is a sharp constant for $\frac{||\Delta f||}{||f||}\leq K(x)\frac{||\Delta x||}{||x||}$ as $||\Delta x||\rightarrow0$.
+	
+	\subsection{Linear Systems, direct estimates}
+	
+	Let's examine a simple matrix multiplication, i.e. $f(x)=Ax$.  Therefore, applying our formula for the condition number $K(x)$ \n
+	\begin{align*}
+		K(A,x)=||A||\frac{||x||}{||Ax||}
+	\end{align*} 
+	
+	The problem is ill-conditioned when $K$ is large, therefore this occurs when $||A||>>\frac{||Ax||}{||x||}$
+
+	\subsubsection{Problem}
+	Solving $Au=b$, $u=A^{-1}b$\n
+	
+	Applying our formula once again, $K(A^{-1},b)=||A^{-1}||\frac{||b||}{||A^{-1}b}||=||A^{-1}||\frac{||Au||}{||u||}$.\n
+	
+	\textbf{Definition: \n}
+	
+	$K(A)=||A||||A^{-1}||$ BE CAREFUL HERE!  The forward problem and the backward problem do not have the same conditions for stability.  This definition can give the mistaken idea that solving the forward ($Ax$) and backward ($A^{-1}x$) problems have the same stability, but this is not true.
+	
+	\subsubsection{Linear Systems, Perturbation System}
+	
+	What happens when we perturb $A$ and when we perturb $b$?  How does this change the conditioning of the problem?  Let's examine the problem $Au=b$ where $b$ is fixed.  When we applied perturbation theory previously we found $||\Delta u||\leq||A^{-1}||||\Delta A||||u||$.  To find the condition number we do some algebra to this expression to yield: $\frac{||\Delta u||}{||u||}\lessapprox||A^{-1}||||A||\frac{||\Delta A||}{||A||}$.  We can check and see that the constant is sharp.    \n
+	
+	Now let's assume $A$ is fixed and we perturb $b$.  We can do this directly: $\dot{A}u+A\dot{u}=\dot{b}\rightarrow A\Delta u=\Delta b$.  We can rewrite this as $\Delta u=A^{-1}\Delta b\rightarrow\frac{||\Delta u||}{||u||}\leq ||A^{-1}||\frac{||\Delta b||}{||b||}\frac{||b||}{||u||}$.  We can use the definition $u=A^{-1}b$ or $b=Au$.  These provide the inequalities $||u||\leq||A^{-1}||||b||$ and $||b||\leq||A||||u||$.  We want to uses the second definition as it give the value of $b$ bounded by $A$ so we find $\frac{||\Delta u||}{||u||}\leq||A^{-1}||||A||\frac{||\Delta b||}{||b||}$.\n
+	
+	What if neither $A$ or $b$ is fixed?  This becomes much more complicated.  It combines both definitions and is not that trivial.  This is a good case to examine and think about.
+	
+	\subsubsection{Eigenvalue/Eigenvector Problem}
+	
+	$Ar_{j}=\lambda_{j}r_{j},||r_{j}||=1$  We want to look at how perturbations of $A$ affect the eigenvalue and eigenvector of this problem. \n
+	
+	Looking first at the Eigenvalue...
+	
+	\begin{align*}
+		&Ar_{j}=\lambda{j}r_{j},A^{*}=A\\
+		&r_{j}^{*}(\dot{A}r_{j}+A\dot{r_{j}}=\dot{\lambda_{j}}r_{j}+\lambda_{j}\dot{r_{j}})\\
+		\therefore &r_{j}^{*}A\dot{r_{j}}=(A^{*}r_{j})^{*}\dot{r_{j}}=\lambda_{j}r_{j}^{*}\dot{r_{j}}\\
+	\end{align*}
+	
+	Since the vector is normalized, $r_{j}^{*}r_{j}=1$, therefore 
+	
+	\begin{align*}
+		&r_{j}^{*}\dot{A}r_{j}=\dot{\lambda_{j}}\\
+		&r_{j}^{*}\Delta Ar_{j}=\Delta \lambda_{j}+O(||\Delta A||^{2})\\
+		&|\Delta\lambda_{j}|\leq||\Delta A||
+	\end{align*}
+	Therefore, to put it into condition number form,
+	
+	\begin{align*}
+		&\frac{|\Delta\lambda_{j}|}{|\lambda_{j}|}\leq\frac{||\Delta A||}{||A||}\frac{||A||}{\lambda_{j}||}\\
+		\rightarrow&\mathbb{K}_{j}(A)=\frac{||A||}{|\lambda_{j}|}\\
+	\end{align*}
+	If $A^{*}=A$, $||A||_{l^2}=|\lambda_{max}|$, $\rightarrow$ ill conditioned only if $|\lambda_{j}|<<|\lambda_{max}||$.  \n
+	
+	Now we want to look at the same problem of eigenvalue in the case where the matrix is not self adjoint ($A\neq A^{*}$)  Since it's not self adjoint we can take that previous inner product with $r_{j}$ since the values are not necessarily real.  But in this case we do know we have left and right eigenvectors!  Using this knowledge we know $l_{j}r_{j}=1$ where $l_{j}A=\lambda_{j}l_{j}$.  Therefore,
+	
+	\begin{align*}
+		l_{j}(\dot{A}r_{j}+A\dot{r_{j}}&=\dot{\lambda_{j}}r_{j}+\lambda_{j}\dot{r_{j}})\\
+		\therefore l_{j}A\dot{r_{j}}&=\lambda_{k}l_{j}\dot{r_{j}}\\
+		l_{j}\dot{A}r_{j}=\dot{\lambda_{j}} \text{ since }l_{j}r_{j}=1\\
+		\Delta\lambda_{j}=l_{j}\Delta A r_{j}+O(||\Delta A||^{2})\\
+		\frac{|\Delta\lambda_{j}|}{|\lambda_{j}|}\leq\frac{||l_{j}^{*}||||r_{j}||}{|\lambda_{j}|}\frac{||\Delta A||}{||A||}||A||\\
+		\rightarrow \mathbb{K_{j}}(A)=\frac{||l_{j}^{*}||||r_{j}||||A||}{\lambda_{j}}\\
+		||l_{j}^{*}||||r_{j}||\leq \mathbb{K}_{LinearSystem}(R)=||R||||R^{-1}||
+	\end{align*}
+	
+	$R$ is the right eigenvector matrix.  Ill-conditioning from either $|\lambda_{j}|<<||A||$ or $R$ is ill-conditioned. \n
+	
+	Now let's suppose all eigenvalues are distinct.  \n
+	
+	Let's assume...
+	
+	\textbf{Look this one up.}
+	
+	What we are doing is projecting the basis $\dot{r}$ onto the right eigenvectors
+	
+\end{document}

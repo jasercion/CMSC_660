@@ -1,0 +1,142 @@
+\documentclass{article}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{tabu}
+\usepackage{hyperref}
+
+\makeatletter
+\def\lecture{\@ifnextchar[{\@lectureWith}{\@lectureWithout}}
+\def\@lectureWith[#1]{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection: #1\@addpunct{.}}%
+		\sectionfont Lecture \thesection. #1\@addpunct{.}}\medbreak}
+\def\@lectureWithout{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection.}%
+		\sectionfont Lecture \thesection.}\medbreak}
+\makeatother
+
+\newcommand{\n}{\newline}
+
+\title{Lectures on Scientific Computing}
+\date{9/11/18}
+\author{Lise-Marie Imbert-Gerard}
+\begin{document}
+	\maketitle
+	
+	\begin{flushleft}
+	Finding a complete set (m of them) of eigenvalues and eigenvectors is called \textbf{diagonalizing} A.\n
+	
+	A matrix with m linearly independent eigenvectors is said to be \textbf{diagonalizable}.\n
+	
+	\textbf{Counter Example: \n}
+	
+	\begin{align*}
+		\begin{bmatrix}
+		0&1\\
+		0&0
+		\end{bmatrix}
+	\end{align*}
+	
+	note that $J^{2}=\begin{bmatrix}
+	0&0\\
+	0&0
+	\end{bmatrix}$.  If $J=R\Lambda R^{-1}$, then $J^{2}=R\Lambda^{2}R^{-1}$ so $\Lambda=\begin{bmatrix}
+	0&0\\
+	0&0
+	\end{bmatrix}$\n
+	
+	A \textbf{Jordan Block} of size $h>1$ with eigenvalues $\lambda$ is a square matrix with 
+	
+	\begin{itemize}
+		\item $\lambda$ on its diagonal\\
+		\item $1$ on its super diagonal\\
+		\item $0$ everywhere else
+	\end{itemize}
+	
+	As a reminder, if a matrix does not have a diagonal form there exists a basis in which A has a Jordan form, i.e. block diagonal with diagonal blocks being either Jordan blocks or $1\times 1$ blocks.\n
+	
+	A matrix $Q$ is said to be \textbf{orthogonal} if $Q^{*}Q=I$.  In otherwords, if a matrix's adjoint is its inverse it is orthogonal.\n
+	
+	\textbf{Proposition:\n}If a matrix $A$ has a Jordan Block then there is no basis of eigenvectors.   \n
+	
+	Even if $A$ is diagonalizable, computing the eigenvectors may be very sensitive.  Often in practice we can use the Schur Form $AQ=QT$ with $T$ upper triangular and $Q$ orthogonal.\n
+	
+	Returning to the symmetric case, we propose that the eigenvalues of a self-adjoint matrix are real.  
+	
+	\textbf{Proof:\n}
+	
+	\begin{align*}
+		Ax&=\lambda x\\
+		x^*Ax&=\lambda x^{*}x\\
+		|Ax|^{*}x&=\lambda x^{*}x\\
+		\bar{\lambda}x^{*}x&=\lambda x^{*}x\\
+		(\bar{\lambda}-\lambda)x^{*}x&=0\\
+		\rightarrow \bar{\lambda}&=\lambda \text{ since }x\neq0
+	\end{align*}\n
+	
+	The left eigenvectors are adjoint of the right eigenvector.  There are no Jordan Blocks, so the matrix is diagonizable and a complete set of its eigenvectors forms a basis.
+	
+	\section{Differentiation and Perturbation Theory}
+	
+	Suppose we look at a function $f$ which is a function of $n$ variables ($x=(x_{1}...x_{n}\in\mathbb{R}^{n}$) and matrix valued ($f_{1}...f_{n}\in\mathbb{R}^{n}$).  The \textbf{Jacobian Matrix} $f'(x)$ is defined as $(\delta_{x1}f|...|\delta_{xn}f)\in\mathbb{R}^{nx^{n}}$.  \n
+	
+	If $f$ is differentiable and $f'$ is Lipschitz then
+	
+	\begin{equation}
+		f(x_{0}+\Delta x)=f(x_{0})+f'(x_{0})\Delta x+\mathcal{O}(||\Delta x||^{2})
+	\end{equation} 
+	 
+	 $\Delta x$ is a vector $\in\mathbb{R}^{n}$ and $\Delta f$ is a vector $\in\mathbb{R}^{n}$.\n
+	
+	Imagine we have a parameter $s$ and we move along the differentiable curve defined by $x$, i.e. $\Delta\rightarrow x(s) \in\mathbb{R}^{n}$ with $x(0)=x_{0}$.  Then $s\rightarrow f(x(s))$ defines a differentiable curve in $\mathbb{R}^{n}$ with $f(x(0))=f(x_{0})$.  We define the \textbf{Virtual Perturbation} by $\dot{x}:=\frac{d}{ds}|_{s}x_{s}$ and $\dot{f}:=\frac{d}{ds}|_{s=0}f(x(s))$.  Therefore, 
+	
+	\begin{equation}
+		\dot{f}=f'(x_{0})\dot{x}
+	\end{equation}
+	
+	The virtual perturbation theory is to compute equation (2) to find the general relation (1).  (2) stands for any $x(s)$. In particular we can use $x(s)=x_{0}+s\dot{x}$.  \n
+	
+	\textbf{Example:\n}
+	
+	\begin{align*}
+	f(A,B)\in\mathbb{R}^{m\times m}\times\mathbb{R}^{m\times p}\rightarrow AB\in\mathbb{R}^{m\times p}
+	\end{align*}
+	
+	with differentiable curves $A(s)$ and $B(s)$.  We can write
+	
+	\begin{align*}
+		(AB)_{j}=\sum_{k=1}^{n}...
+	\end{align*}
+	
+	REVIEW SECTION ON PERTURBATION THEORY\n
+	
+	When $m=1$ we write the Jacobian as $\nabla f$.  \n
+	\textbf{Example:\n}
+	
+	\begin{align*}
+		f(x)=x^{*}Ax
+	\end{align*}
+	for a given matrix A, then $\dot{f}=x^{*}(Ax)+x^{*}\dot{(Ax)}=\dot{x}^{*}(Ax)+x^{*}A\dot{x}$
+	
+	\begin{align*}
+		\dot{x}^{*}(Ax)+x^{*}A\dot{x}&=x^{*}(A^{*}+A)\dot{x}\\
+		&=>\nabla(x^{*}Ax)=x^{*}(A^{*}+A)
+	\end{align*}
+	
+	\section{Variational Principles for the Symmetric Eigenvalue Problem}
+	
+	A \textbf{Variational Principle} means that you can express the problem of finding one point in a space by isolating it as the minimum or maximum of a function.  i.e. you are creating a new problem in which the thing that you are looking for is the solution as a maximum or a minimum.  \n
+	
+	The \textbf{Rayleigh Quotient} for a matrix $A\in\mathbb{C}^{m\times m}$ is $\forall x\in\mathbb{C}^{m}(x\neq0)\text{ }Q(x)=\frac{x^{*}Ax}{x^{*}x}$\n
+	
+	A vector $r$ is a stationary point of $Q$ if $\nabla Q(r)=0$ and $\lambda:=Q(r)$ which is a stationary value.  
+	
+	\subsection{Theorem}
+	
+	Suppose $A$ is self-adjoint.  Then $x\neq 0$ is an eigenvector if and only if it is a stationary point of $Q$.  In this case the corresponding eigenvalue is the stationary value.
+	\end{flushleft}
+\end{document}

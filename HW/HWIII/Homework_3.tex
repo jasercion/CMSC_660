@@ -44,4 +44,291 @@
 	Check that there are $n-1$ distinct eigenvectors of $A$ having the form $r_{kj}=\sin(k\pi x_{j})$ where $r_{kj}$ is the $j$ component of the eigenvector $r_{k}$.
 	\subsubsection{Answer}
 	
+	We are given the expression $AU=F$ and are told the form of both $F$ and $U$.  Therefore we can calculate the form the matrix $A$ must be in: \n
+	
+	\begin{align*}
+		U&=\begin{bmatrix}
+			0\\
+			U_{1}\\
+			U_{2}\\
+			U_{3}\\
+			...\\
+			U_{n-1}\\
+			0
+			\end{bmatrix}\\
+		F_j&=\frac{1}{2}\frac{1}{\Delta x^{2}}(U_{j+1}-2U_{j}+U_{j-1})=f(x_j)\\
+		\therefore A&=\frac{1}{2}\frac{1}{\Delta x^{2}}\begin{bmatrix}
+		-2 & 1 & 0 & 0 & 0 & ... & 0\\
+		1 & -2 & 1 & 0 & 0 & 0 & ...\\
+		0 & 1 & -2 & 1 & 0 & 0 & ... \\
+		0 & 0 & 1 & -2 & 1 & 0 & ... \\
+		... & ... & ... & ... & ... & ... & ... \\
+		... & ... & ... & 0 & 1 & -2 & 1 \\
+		0 & ... & ... & ... & 0 & 1 & -2 
+		\end{bmatrix}
+	\end{align*}
+	Where $A$ has dimensions of $(n-1)\times (n-1)$.  \n
+	
+	Let $R_{k}$ be the $kth$ vector consisting of elements $r_{kj}=sin(k\pi x_{j})$.  If $R_{k}$ is an eigenvector of matrix $A$ then it satisfies
+	
+	\begin{align*}
+		AR_{k}=\lambda_{k}R_{k}
+	\end{align*}  
+	
+	Where $\lambda_{k}$ is the eigenvalue associated with the $k^{th}$ eigenvector.  Starting with the $k=1$ case we can plug in values and expand this expression:
+	
+	\begin{align*}
+	 \frac{1}{2}\frac{1}{\Delta x^{2}}\begin{bmatrix}
+	-2 & 1 & 0 & 0 & 0 & ... & 0\\
+	1 & -2 & 1 & 0 & 0 & 0 & ...\\
+	0 & 1 & -2 & 1 & 0 & 0 & ... \\
+	0 & 0 & 1 & -2 & 1 & 0 & ... \\
+	... & ... & ... & ... & ... & ... & ... \\
+	... & ... & ... & 0 & 1 & -2 & 1 \\
+	0 & ... & ... & ... & 0 & 1 & -2 
+	\end{bmatrix}
+	\begin{bmatrix}
+	\sin(\pi x_{1}) \\
+	\sin(\pi x_{1+1})\\
+	\sin(\pi x_{1+2})\\
+	\sin(\pi x_{1+3})\\
+	...\\
+	\sin(\pi x_{n-2})
+	\end{bmatrix}=\lambda_{1}
+	\begin{bmatrix}
+	\sin(\pi x_{1}) \\
+	\sin(\pi x_{1+1})\\
+	\sin(\pi x_{1+2})\\
+	\sin(\pi x_{1+3})\\
+	...\\
+	\sin(\pi x_{n-1})
+	\end{bmatrix}
+	\end{align*}
+	
+	Noting that $r_{k,j+1}=\sin(k\pi(x+\Delta x))$, and that $n\Delta x=1$, we can rewrite the above expression as 
+	
+	\begin{align*}
+	&\frac{1}{2}\frac{1}{\Delta x^{2}}\begin{bmatrix}
+	-2 & 1 & 0 & 0 & 0 & ... & 0\\
+	1 & -2 & 1 & 0 & 0 & 0 & ...\\
+	0 & 1 & -2 & 1 & 0 & 0 & ... \\
+	0 & 0 & 1 & -2 & 1 & 0 & ... \\
+	... & ... & ... & ... & ... & ... & ... \\
+	... & ... & ... & 0 & 1 & -2 & 1 \\
+	0 & ... & ... & ... & 0 & 1 & -2 
+	\end{bmatrix}
+	\begin{bmatrix}
+	\sin(\pi x_{1}) \\
+	\sin(\pi (x_{1}+\Delta x))\\
+	\sin(\pi (x_{1}+2\Delta x))\\
+	\sin(\pi (x_{1}+3\Delta x))\\
+	...\\
+	\sin(\pi(x_{1}+(n-3)\Delta x))\\
+	\sin(\pi (x_{1}+(n-2)\Delta x))
+	\end{bmatrix}=\lambda_{1}
+	\begin{bmatrix}
+	\sin(\pi x_{1}) \\
+	\sin(\pi (x_{1}+\Delta x))\\
+	\sin(\pi (x_{1}+2\Delta x))\\
+	\sin(\pi (x_{1}+3\Delta x))\\
+	...\\
+	\sin(\pi(x_{1}+(n-3)\Delta x))\\
+	\sin(\pi (x_{1}+(n-2)\Delta x))
+	\end{bmatrix}\\
+	\end{align*}
+	
+	Which gives equations of the form 
+	
+	\begin{align*}
+	&\frac{1}{2}\frac{1}{\Delta x^{2}}(-2\sin(\pi x_{1})+\sin(\pi(x_{1}+\Delta x)))=\lambda_{1}\sin(\pi x_{1})\\
+	&\frac{1}{2}\frac{1}{\Delta x^{2}}(\sin(\pi x_{1})-2\sin(\pi (x_{1}+\Delta x))+\sin(\pi(x_{1}+2\Delta x)))=\lambda_{1}\sin(\pi x_{1}+\Delta x)\\
+	&\frac{1}{2}\frac{1}{\Delta x^{2}}(\sin(\pi x_{1}+\Delta x)-2\sin(\pi x_{1}+2\Delta x)+\sin(\pi(x_{1}+3\Delta x)))=\lambda_{1}\sin(\pi (x_{1}+2\Delta x))\\
+	&...\\
+	&\frac{1}{2}\frac{1}{\Delta x^{2}}(\sin(\pi(x_{1}+(n-4)\Delta x))-2\sin(\pi(x_{1}+(n-3)\Delta x))+\sin(\pi(x_{1}+(n-2)\Delta x)))\\&=\lambda_{1}\sin(\pi(x_{1}+(n-3)\Delta x))\\
+	&\frac{1}{2}\frac{1}{\Delta x^{2}}(\sin(\pi(x_{1}+(n-3)\Delta x))-2\sin(\pi(x_{1}+(n-2)\Delta x)))\\&=\lambda_{1}\sin(\pi(x_{1}+(n-2)\Delta x))\\
+	\end{align*}
+	
+	Using the given fact that $n\Delta x=1$, the generated equations can be simplified:
+	
+	\begin{align*}
+		&\frac{1}{2}\frac{1}{\Delta x^{2}}(-2\sin(\pi x_{1})+\sin(\pi(x_{1}+\Delta x)))=\lambda_{1}\sin(\pi x_{1})\\
+		&\frac{1}{2}\frac{1}{\Delta x^{2}}(\sin(\pi x_{1})-2\sin(\pi (x_{1}+\Delta x))+\sin(\pi(x_{1}+2\Delta x)))=\lambda_{1}\sin(\pi x_{1}+\Delta x)\\
+		&\frac{1}{2}\frac{1}{\Delta x^{2}}(\sin(\pi x_{1}+\Delta x)-2\sin(\pi x_{1}+2\Delta x)+\sin(\pi(x_{1}+3\Delta x)))=\lambda_{1}\sin(\pi (x_{1}+2\Delta x))\\
+		&...\\
+		&\frac{1}{2}\frac{1}{\Delta x^{2}}(\sin(\pi(x_{1}+1-4\Delta x))-2\sin(\pi(x_{1}+1-3\Delta x))+\sin(\pi(x_{1}+1-2\Delta x)))\\&=\lambda_{1}\sin(\pi(x_{1}+1-3\Delta x))\\
+		&\frac{1}{2}\frac{1}{\Delta x^{2}}(\sin(\pi(x_{1}+1-3\Delta x))-2\sin(\pi(x_{1}+1-2\Delta x)))\\&=\lambda_{1}\sin(\pi(x_{1}+1-2\Delta x))\\
+	\end{align*}
+	
+	Applying $x_{j}=j\Delta x$...
+	
+	\begin{align*}
+		&\frac{1}{2}\frac{1}{\Delta x^{2}}(-2\sin(\pi \Delta x)+\sin(2\pi\Delta x))=\lambda_{1}\sin(\pi\Delta x)\\
+		&\frac{1}{2}\frac{1}{\Delta x^{2}}(\sin(\pi \Delta x)-2\sin(2\pi\Delta x)+\sin(3\pi\Delta x))=\lambda_{1}\sin(2\pi\Delta x)\\
+		&\frac{1}{2}\frac{1}{\Delta x^{2}}(\sin(2\pi\Delta x)-2\sin(3\pi\Delta x)+\sin(4\pi\Delta x))=\lambda_{1}\sin(3\pi\Delta x)\\
+		&...\\
+		&\frac{1}{2}\frac{1}{\Delta x^{2}}(\sin(\pi(1-3\Delta x))-2\sin(\pi(1-2\Delta x))+\sin(\pi(1-\Delta x)))=\lambda_{1}\sin(\pi(1-2\Delta x))\\
+		&\frac{1}{2}\frac{1}{\Delta x^{2}}(\sin(\pi(1-2\Delta x))-2\sin(\pi(1-\Delta x)))=\lambda_{1}\sin(\pi(1-\Delta x))\\
+	\end{align*}
+	
+	Applying a bit of algebra and the identities of trigonometric functions allows us to isolate the $\lambda_{1}$ eigenvalue:
+	
+	\begin{align*}
+		\frac{\cos(\pi\Delta x)-1}{\Delta x^2}=\lambda_{1}\\
+	\end{align*}
+	
+	Generalizing this for all $k$ yields:
+	
+	\begin{equation}
+		\frac{\cos(k\pi\Delta x)-1}{\Delta x^2}=\lambda_{k}
+	\end{equation}
+	
+	Since (1) is a scalar value solely dependent on the step size $\Delta x$ and the index $k$, it shows that the vector $R_{k}$ is in fact an eigenvector of matrix $A$.  As noted in \cite{BG}(pg. 77), the $(n-1)\times(n-1)$ matrix $A$ may have up to $n-1$ eigenvectors.  We see that (1) implies that iterating the value of $k$ generates a distinct eigenvalue, therefore the set of eigenvectors associated with the eigenvalues defined by (1) are linearly independent and form a basis for $\mathbb{C}^{n-1}$ \cite{BG}(pg. 77).  Therefore, there must be $n-1$ eigenvectors of $A$ in the form of $R_{k}$.
+
+	\subsection{b. Calculation}
+	Use te eigenvalue information from part (a) to show that $||A^{-1}||\rightarrow\frac{2}{\pi^{2}}$ as $n\rightarrow\infty$ and $\kappa(A)=\mathcal{O}(n^{2})$ as $n\rightarrow\infty$.  (Use Euclidian Norms). 
+	
+	\subsubsection{Answer}	
+	
+	 From 4.2.7 Theorem 1 \cite{BG}(pg. 82), if a matrix is self-adjoint the Rayleigh Quotient of an eigenvector is its corresponding eigenvalue.  Plugging in the values found in part a we obtain:
+	
+	\begin{align*}
+		Q(x)=\lambda_{k}&=\frac{R_{k}^{*}AR_{k}}{R_{k}^{*}R_{k}}\\
+		\frac{\cos(k\pi\Delta x)-1}{\Delta x^{2}}&=\frac{(\sin(k\pi x_{j}))^{*} A\sin(k\pi x_{j})}{(\sin(k\pi x_{j}))^{*}\sin(k\pi x_{j})}
+	\end{align*}
+	
+	From the definition of the Euclidian Norm of a matrix \cite{BG}(pg. 76), we see that the maximum of Rayleigh Quotient is the Euclidean Norm of the matrix $A$ squared.  i.e.
+	
+	\begin{equation}
+		||A||_{l^{2}}=max\Big(\frac{\cos(k\pi\Delta x)-1}{\Delta x^{2}}\Big)=max\Big(n^{2}(\cos(k\pi\frac{1}{n})-1)\Big)
+	\end{equation}
+
+	Taking the limit of (2) as $n\rightarrow\infty$ yields
+	
+	\begin{align*}
+		\lim_{n\rightarrow\infty}n^{2}(\cos(k\pi\frac{1}{n})-1)=-\frac{k^2\pi^2}{2}
+	\end{align*}
+	
+	To find the norm of $||A^{-1}||$ we need to invert this expression:
+	
+	\begin{equation}
+		||A^{-1}||_{l^{2}}=\frac{2}{\pi^{2}}
+	\end{equation}
+	
+	Informally, $\kappa(A)$ is on the order of $\mathcal{O}(n^{2})$ due to the condition number of an eigenvalue problems's dependence on the the norm of $\Delta A$\cite{BG}(pg. 92).  In (2) the dominant term as $n\rightarrow\infty$ will the the leading $n^{2}$ term.  Therefore the overall condition number of the Eigenvalue problem will be on the order of $n^{2}$.
+	
+	\subsection{c. Calculation}
+		Given:
+		\begin{itemize}
+			\item $\tilde{U_{j}}=u(x_j)$, where $u(x)$ is the exact but unknown solution to the BVP
+			\item $R=A\tilde{U}-F$ is defined to be the residual
+		\end{itemize}
+		Show that if $u(x)$ is smooth then the residual satisfies $||R||=\mathcal{O}(\Delta x^{2})=\mathcal{O}(\frac{1}{n^{2}})$
+	\subsubsection{Answer}
+		From the statement of the problem we know $F=AU$.  Therefore, we can rewrite the residual as 
+		
+		\begin{align*}
+			R=A\tilde{U}-AU
+		\end{align*}
+		
+		Therefore,
+		
+		\begin{align*}
+			||R||=||A\tilde{U}-AU||\leq||A\tilde{U}||-||AU||\leq||A|| ||\tilde{U}||-||A|| ||U|| \text{\cite{BG} (pg. 74)}
+		\end{align*}
+		
+		The Euclidean Norm of a matrix can be calculated as $||A||_{2}=\sqrt{Trace(A^{T}A)}$\cite{FNorm}.  $A$ is a symmetric matrix, so $A=A^{T}$.  The Trace of a matrix is simply the sum of the diagonal elements, so only those elements need to be calculated:
+		
+		\begin{align*}
+			A^{T}A=
+			\begin{bmatrix}
+			-2&1&0&0&0&...&0\\
+			1&-2&1&0&0&...&0\\
+			0&1&-2&1&0&...&0\\
+			...&...&...&...&...&...&...\\
+			0&0&0&0&0&1&-2\\
+			\end{bmatrix}&
+			\begin{bmatrix}
+			-2&1&0&0&0&...&0\\
+			1&-2&1&0&0&...&0\\
+			0&1&-2&1&0&...&0\\
+			...&...&...&...&...&...&...\\
+			0&0&0&0&0&1&-2\\
+			\end{bmatrix}=\\
+			&\begin{bmatrix}
+			5&...&...&...&...&...&...\\
+			...&6&...&...&...&...&...\\
+			...&...&6&...&...&...&...\\
+			...&...&...&...&...&...&...\\
+			...&...&...&...&...&...&5\\
+			\end{bmatrix}
+		\end{align*}
+		
+		Therefore, because $A$ is a $(n-1)\times(n-1)$ square matrix, 
+		
+		\begin{align*}
+			Trace(A^{T}A)&=((n-3)*6)+(2*5)=6n-8\\
+			\therefore ||A||_{l^{2}}&=\sqrt{6n-8}x
+		\end{align*}
+		
+	\subsection{d. Calculation}
+		Show that $A(U-\tilde{U})=R$.  Use part (b) to show that $||U-\tilde{U}||=\mathcal{O}(\Delta x^{2})$
+	
+		\subsubsection{Answer}
+	
+	\subsection{f. MATLAB}
+		Write a program in MATLAB to solve $AU=F$ for the second order method.
+		\subsubsection{Answer}
+		Code attached in appendix.
+		
+	\section{Chapter 4, Problem 12}
+		\subsection{a. Calculation}
+		Show that if $\dot{S}=SA$, $S(0)=I$, then $p(t)=p(0)S(t)$
+		\subsubsection{Answer}
+		
+		\subsection{b. Calculation}
+		Use matrix norms and the fact that $||B^{k}||\leq||B||^{k}$ to show that the infinite sum of matrices converges
+		\subsubsection{Answer}
+		
+		\subsection{c. Calculation}
+		Show that the fundamental solution is given by $S(t)=e^{tA}$.
+		\subsubsection{Answer}
+		
+		\subsection{d. Calculation}
+		Show that $e^{tA}=Le^{t\Lambda}R$ and that $e^{t\Lambda}$ is the obvious diagonal matrix
+		\subsubsection{Answer}
+		
+		\subsection{e. MATLAB}
+		\subsubsection{Answer}
+		
+		\subsection{f. MATLAB}
+		\subsubsection{Answer}
+		
+		\subsection{g. MATLAB}
+		\subsubsection{Answer}
+		
+		\subsection{h. MATLAB}
+		\subsubsection{Answer}
+		
+	\section{Chapter 4, Problem 13}
+		\section{a. MATLAB}
+			\subsection{Answer}
+			
+		\section{b. MATLAB}
+			\subsection{Answer}
+	
+	\begin{thebibliography}{2}
+		\bibitem{BG}
+		David Bindel and Johnathan Goodman.
+		\textit{Principles of Scientific Computing}. 
+		2009.
+		\bibitem{FNorm}
+		\textit{Wikipedia Page for the Frobenius Norm}
+		\begin{verbatim}
+			https://en.wikipedia.org/wiki/Matrix_norm#Frobenius_norm
+		\end{verbatim}
+		
+	\end{thebibliography}
+	
+	
+	 
 \end{document}

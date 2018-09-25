@@ -18,7 +18,7 @@ n = 4;
 R = zeros(n);
 Lam = zeros(n);
 
-% Build the MCT matrix.  Call a test tridiag matrix of size n-1 and change
+% Build the MCT matrix.  Call a test tridiag matrix of size n and change
 % elements [1, 1] and [n, n] to their correct values.
 A = gallery('tridiag',n,mu,-(lambda+mu),lambda);
 A(1, 1) = -lambda;

@@ -236,50 +236,61 @@
 			||R||=||A\tilde{U}-AU||\leq||A\tilde{U}||-||AU||\leq||A|| ||\tilde{U}||-||A|| ||U|| \text{\cite{BG} (pg. 74)}
 		\end{align*}
 		
-		The Euclidean Norm of a matrix can be calculated as $||A||_{2}=\sqrt{Trace(A^{T}A)}$\cite{FNorm}.  $A$ is a symmetric matrix, so $A=A^{T}$.  The Trace of a matrix is simply the sum of the diagonal elements, so only those elements need to be calculated:
+		From part B we know the norm of $||A||$, therefore
 		
 		\begin{align*}
-			A^{T}A=
-			\begin{bmatrix}
-			-2&1&0&0&0&...&0\\
-			1&-2&1&0&0&...&0\\
-			0&1&-2&1&0&...&0\\
-			...&...&...&...&...&...&...\\
-			0&0&0&0&0&1&-2\\
-			\end{bmatrix}&
-			\begin{bmatrix}
-			-2&1&0&0&0&...&0\\
-			1&-2&1&0&0&...&0\\
-			0&1&-2&1&0&...&0\\
-			...&...&...&...&...&...&...\\
-			0&0&0&0&0&1&-2\\
-			\end{bmatrix}=\\
-			&\begin{bmatrix}
-			5&...&...&...&...&...&...\\
-			...&6&...&...&...&...&...\\
-			...&...&6&...&...&...&...\\
-			...&...&...&...&...&...&...\\
-			...&...&...&...&...&...&5\\
-			\end{bmatrix}
+			||R||&=\frac{\cos(k\pi\Delta x)-1}{\Delta x^{2}}||\tilde{U}||-\frac{\cos(k\pi\Delta x)-1}{\Delta x^{2}}||U||\\
+			&=\frac{\cos(k\pi\Delta x)-1}{\Delta x^{2}}(||\tilde{U}||-||U||)\\
+			&=\frac{\cos(k\pi\Delta x)-1}{\Delta x^{2}}(||\Delta x\sum_{k=1}^{n}\tilde{U_{j}^{2}}||-||\Delta x\sum_{k=1}^{n}U_{j}^{2}||)\\
+			||R||&=\frac{\cos(k\pi\Delta x)-1}{\Delta x}(||\sum_{k=1}^{n}\tilde{U_{j}^{2}}||-||\sum_{k=1}^{n}U_{j}^{2}||)
 		\end{align*}
 		
-		Therefore, because $A$ is a $(n-1)\times(n-1)$ square matrix, 
-		
-		\begin{align*}
-			Trace(A^{T}A)&=((n-3)*6)+(2*5)=6n-8\\
-			\therefore ||A||_{l^{2}}&=\sqrt{6n-8}x
-		\end{align*}
 		
 	\subsection{d. Calculation}
 		Show that $A(U-\tilde{U})=R$.  Use part (b) to show that $||U-\tilde{U}||=\mathcal{O}(\Delta x^{2})$
 	
 		\subsubsection{Answer}
-	
+	\newpage
 	\subsection{f. MATLAB}
 		Write a program in MATLAB to solve $AU=F$ for the second order method.
 		\subsubsection{Answer}
-		Code attached in appendix.
+		\begin{lstlisting}
+		%*****************************
+		% CMSC660 HW3 Problem 1f
+		% Joe Asercion
+		%***************************** 
 		
+		% Set iteration step size
+		delta_x=.001;
+		
+		% Total number of steps
+		n=(1/delta_x);
+		
+		% Vector to hold F(x) function values
+		F=ones(n-1,1);
+		
+		% Constant for Eigenvector F(x) case
+		k=1;
+		
+		% Populate F(x) vector
+		for j = 1:(n-1)
+		% Define function to populate F(x) with here:
+		F(j)=sin(k*pi*(j*delta_x));
+		end
+		
+		% 'A' Transformation Matrix
+		A = (1/2)*(1/(delta_x)^2)*gallery('tridiag',n-1,1,-2,1);
+		
+		% Solution for AU=F using MATLAB backslash operator
+		U = A\F;
+		
+		% Vector consisting of steps for plot
+		X = 0+delta_x:delta_x:1-delta_x;
+		
+		% Plot delta_x vs U(x)
+		scatter(X,U)
+		\end{lstlisting}
+		\newpage
 	\section{Chapter 4, Problem 12}
 		\subsection{a. Calculation}
 		Show that if $\dot{S}=SA$, $S(0)=I$, then $p(t)=p(0)S(t)$
@@ -369,14 +380,108 @@
 		
 		$e^{t\Lambda}$ is the obvious diagonal matrix for $e^{tA}$ as it simply takes the matrix exponential of the scaled $\Lambda$.  The original $\Lambda$ matrix is only being modified along the diagonal, since nothing is being added to it, and the scaled eigenvalues in the $e^{t\Lambda}$ matrix still correspond with the $R$ and $L$ eigenvectors, as shown above.
 		
+		\newpage
 		\subsection{e. MATLAB}
-		
 		Calculate the eigenvalues and right eigenvector matrix of A using the Matlab eig(A) function.  
 		\subsubsection{Answer}
+		\begin{lstlisting}
+		%*****************************
+		% CMSC660 HW3 Problem 2e
+		% Joe Asercion
+		%***************************** 
 		
+		% Set Markov chain transition matrix constants
+		lambda = 1;
+		mu = 4;
+		
+		% Time constant
+		t = 1;
+		
+		% Iterations
+		n = 4;
+		k = 20;
+		
+		% Preallocate matrices to store the eigenvalues and eigenvectors returned 
+		% by eig[A]
+		R = zeros(n);
+		Lam = zeros(n);
+		
+		% Build the MCT matrix.  Call a test tridiag matrix of size n-1 and change
+		% elements [1, 1] and [n, n] to their correct values.
+		A = gallery('tridiag',n,mu,-(lambda+mu),lambda);
+		A(1, 1) = -lambda;
+		A(n, n) = -mu;
+		
+		% Convert sparse matrix A to a full matrix so that eig can be called
+		A = full(A);
+		
+		% Call eig to calculate eigenvalues/right eigenvectors
+		[R,Lam] = eig(A);
+		
+		for k = 1:n
+		l = Lam(:,k);
+		r = R(:,k);
+		n = l.*r-A*r;
+		k = num2str(k);
+		disp([newline,'Ar_{k}, k=',k newline]);
+		disp(A*r);
+		disp([newline,'lambda_{k}r_{k}, k=',k newline]);
+		disp(l.*r);
+		disp([newline,'Norm lambda_{k}r_{k}-Ar_{k}, k=',k newline]);
+		disp(norm(n));
+		end
+		\end{lstlisting}
+		\newpage
 		\subsection{f. MATLAB}
 		\subsubsection{Answer}
+		\begin{lstlisting}
+		%*****************************
+		% CMSC660 HW3 Problem 2f
+		% Joe Asercion
+		%***************************** 
 		
+		% Set Markov chain transition matrix constants
+		lambda = 1;
+		mu = 4;
+		
+		% Time constant
+		t = 1;
+		
+		% Iterations
+		n = 4;
+		
+		% Preallocate matrices to store the eigenvalues and eigenvectors returned 
+		% by eig[A]
+		R = zeros(n);
+		Lam = zeros(n);
+		
+		% Build the MCT matrix.  Call a test tridiag matrix of size n and change
+		% elements [1, 1] and [n, n] to their correct values.
+		A = gallery('tridiag',n,mu,-(lambda+mu),lambda);
+		A(1, 1) = -lambda;
+		A(n, n) = -mu;
+		
+		% Convert sparse matrix A to a full matrix so that eig can be called
+		A = full(A);
+		
+		% Call eig to calculate eigenvalues/right eigenvectors
+		[R,Lam] = eig(A);
+		
+		L = R^(-1);
+		
+		for k = 1:n
+		lam = Lam(:,k);
+		l = L(:,k);
+		n = l.*lam-A*l;
+		k = num2str(k);
+		disp([newline,'Al_{k}, k=',k newline]);
+		disp(A*l);
+		disp([newline,'l_{k}lambda_{k}, k=',k newline]);
+		disp(l.*lam);
+		disp([newline,'Norm lambda_{k}-Al_{l}, k=',k newline]);
+		disp(norm(n));
+		end
+		\end{lstlisting}
 		\subsection{g. MATLAB}
 		\subsubsection{Answer}
 		
@@ -386,6 +491,37 @@
 	\section{Chapter 4, Problem 13}
 		\subsection{a. MATLAB}
 			\subsubsection{Answer}
+			\begin{lstlisting}
+			%*****************************
+			% CMSC660 HW3 Problem 3a
+			% Joe Asercion
+			%***************************** 
+			
+			% Constants
+			n = 20;
+			s = .1;
+			lambda = 1;
+			mu = 4;
+			
+			% Create matrix B
+			B = zeros(n);
+			B(1, 1) = -1;
+			B(1, n) = 1;
+			
+			% Create MCT matrix
+			lambda = 1;
+			A = gallery('tridiag',n,mu,-(lambda+mu),lambda);
+			A(1, 1) = -lambda;
+			A(n, n) = -mu;
+			
+			A(1, 1) = -lambda;
+			A(n, n) = -mu;
+			A = full(A);
+			
+			% Compute the eigenvalues of the A(s) function
+			Y = A + s*B;
+			Lam = eig(Y);
+			\end{lstlisting}
 			
 		\subsection{b. MATLAB}
 			\subsubsection{Answer}

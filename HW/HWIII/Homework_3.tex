@@ -93,7 +93,7 @@
 	\sin(\pi x_{1+2})\\
 	\sin(\pi x_{1+3})\\
 	...\\
-	\sin(\pi x_{n-2})
+	\sin(\pi x_{n-1})
 	\end{bmatrix}=\lambda_{1}
 	\begin{bmatrix}
 	\sin(\pi x_{1}) \\
@@ -286,18 +286,92 @@
 		\subsubsection{Answer}
 		
 		\subsection{b. Calculation}
-		Use matrix norms and the fact that $||B^{k}||\leq||B||^{k}$ to show that the infinite sum of matrices converges
+		Use matrix norms and the fact that $||B^{k}||\leq||B||^{k}$ to show that the matrix exponential $e^{B}=\sum_{k=0}^{\infty}\frac{1}{k!}B^{K}$ converges.
 		\subsubsection{Answer}
+		
+		Using the given fact that $||B^{k}||\leq||B||^{k}$, we can state that, for each individual term in sum, 
+		
+		\begin{equation}
+			||\frac{B^{k}}{k!}||\leq\frac{||B||^{k}}{k!}
+		\end{equation}
+		
+		From the definition of the matrix norm \cite{BG}(pg. 76), it can be noted that $||B||$ is the sharp constant in the inequality above.  Therefore, norm of each individual term of the matrix exponential sum is upper bounded by the norm of the matrix itself. \n
+		
+		Because the norm of B, $||B||$, is a scalar function we can note that $\sum_{k=0}^{\infty}\frac{||B||^k}{k!}$ is in the form of the Exponential Series, which is known to be convergent.  Due to (4),
+		
+		\begin{align*}
+			\sum_{k=0}^{\infty}||\frac{B^k}{k!}||\leq\sum_{k=0}^{\infty}\frac{||B||^k}{k!}
+		\end{align*} 
+		
+		Therefore, by the Direct Comparison convergence test\cite{ComTest} we can state that $\sum_{k=0}^{\infty}||\frac{B^k}{k!}||$ must converge as well.  Because the norm of a matrix is, by definition, the largest amount it can stretch a vector\cite{BG}(pg. 76), 
+		
+		\begin{align*}
+			\sum_{k=0}^{\infty}\frac{1}{k!}B^{K}\leq\sum_{k=0}^{\infty}||\frac{B^k}{k!}
+		\end{align*}
+		
+		By the Direct Comparison test once again we can state that $\sum_{k=0}^{\infty}\frac{1}{k!}B^{k}$ must converge.
 		
 		\subsection{c. Calculation}
 		Show that the fundamental solution is given by $S(t)=e^{tA}$.
 		\subsubsection{Answer}
 		
+		\textbf{First Condition:} Is $\frac{d}{dt}S(t)=S(t)A$?\n
+		
+		Expressing $S(t)$ as an infinite sum,
+		
+		\begin{align*}
+			S(t)&=\sum_{k=0}^{\infty}\frac{1}{k!}(tA)^{k}=1+tA+\frac{(tA)^2}{2}+\frac{(tA)^3}{6}+\frac{(tA)^4}{24}+.... \\
+			\therefore \frac{d}{dt}(S(t))&=\frac{d}{dt}(\sum_{k=0}^{\infty}\frac{(tA)^{k}}{k!})=\sum_{k=1}^{\infty}\frac{k(t^{k-1})A^k}{k!}=A+tA^2+\frac{t^2A^3}{2}+\frac{t^3A^4}{6}+\frac{t^4A^5}{24}+...\\
+			\therefore \frac{d}{dt}S(t)&=S(t)A
+		\end{align*}
+		
+		\textbf{Second Condition:} Is $S(0)=I$?\n
+		
+		Again expressing $S(t)$ as an infinite sum,
+		
+		\begin{align*}
+			S(0)&=\sum_{k=0}^{\infty}\frac{(0A)^k}{k!}=\sum_{k=0}^{\infty}\frac{\mathbf{0}^k}{k!}
+		\end{align*}
+		
+		Where $\mathbf{0}$ is a zero matrix with the dimensions of $A$.  $\mathbf{0}^n=I$ for $n=0$ and $\mathbf{0}^n=\mathbf{0}$ for $n\neq0$.  Therefore $S(0)=I$.
+		
+		
 		\subsection{d. Calculation}
-		Show that $e^{tA}=Le^{t\Lambda}R$ and that $e^{t\Lambda}$ is the obvious diagonal matrix
+		Show that $e^{tA}=Re^{t\Lambda}L$ and that $e^{t\Lambda}$ is the obvious diagonal matrix
 		\subsubsection{Answer}
 		
+		Let $A=R\Lambda L$.  Then
+		
+		\begin{align*}
+			e^{tA}&=\sum_{k=0}^{\infty}\frac{(tA)^k}{k!}\\
+			&=\sum_{k=0}^{\infty}\frac{(tR\Lambda L)^k}{k!}=\sum_{k=0}^{\infty}\frac{t^k(R\Lambda L)^k}{k!}
+		\end{align*}
+		
+		Examining the $(R\Lambda L)^k$ term,
+		
+		\begin{align*}
+			(R\lambda L)^{k}=(R\lambda L)(R\lambda L)(R\lambda L)....
+		\end{align*}
+		
+		However, $L=R^{-1}$.  Therefore, the only two $R$ and $L$ matrices that persist at the end of the product will be the $R$ at the head of the term and the $L$ at the tail.  The sum can thusly be rewritten as
+		
+		\begin{align*}
+			e^{tA}=\sum_{k=0}^{\infty}\frac{t^{k}R\Lambda^{k}L}{k!}
+		\end{align*}
+		
+		Since $R$ and $L$ are no longer subject to the index $k$ (as they appear once in each term of the sum), they can be pulled out of the summation and the expression can be simplified:
+		
+		\begin{align*}
+			e^{tA}&=\sum_{k=0}^{\infty}\frac{t^{k}R\Lambda^{k}L}{k!}\\
+			&=R(\sum_{k=0}^{\infty}\frac{t^{k}\Lambda^{k}}{k!})L\\
+			&=Re^{t\Lambda}L
+		\end{align*}
+		
+		$e^{t\Lambda}$ is the obvious diagonal matrix for $e^{tA}$ as it simply takes the matrix exponential of the scaled $\Lambda$.  The original $\Lambda$ matrix is only being modified along the diagonal, since nothing is being added to it, and the scaled eigenvalues in the $e^{t\Lambda}$ matrix still correspond with the $R$ and $L$ eigenvectors, as shown above.
+		
 		\subsection{e. MATLAB}
+		
+		Calculate the eigenvalues and right eigenvector matrix of A using the Matlab eig(A) function.  
 		\subsubsection{Answer}
 		
 		\subsection{f. MATLAB}
@@ -310,11 +384,11 @@
 		\subsubsection{Answer}
 		
 	\section{Chapter 4, Problem 13}
-		\section{a. MATLAB}
-			\subsection{Answer}
+		\subsection{a. MATLAB}
+			\subsubsection{Answer}
 			
-		\section{b. MATLAB}
-			\subsection{Answer}
+		\subsection{b. MATLAB}
+			\subsubsection{Answer}
 	
 	\begin{thebibliography}{2}
 		\bibitem{BG}
@@ -325,6 +399,11 @@
 		\textit{Wikipedia Page for the Frobenius Norm}
 		\begin{verbatim}
 			https://en.wikipedia.org/wiki/Matrix_norm#Frobenius_norm
+		\end{verbatim}
+		\bibitem{ComTest}
+		\textit{Wikipedia Page for Convergence Tests}
+		\begin{verbatim}
+			https://en.wikipedia.org/wiki/Convergence_tests
 		\end{verbatim}
 		
 	\end{thebibliography}

@@ -30,6 +30,9 @@
 \author{Joe Asercion}
 \begin{document}
 	\maketitle
+
+	Note: I unfortunately ran out of time to finish this HW (was just one of those weeks).  The current problem parts are missing in their entirety and have been deleted for the sake of brevity: 1.d, 2.a, 2.g, 2.h, 3.b.\n
+	
 	\section{Chapter 4, Problem 11}
 	Given the following information:
 	\begin{itemize}
@@ -244,12 +247,6 @@
 			&=\frac{\cos(k\pi\Delta x)-1}{\Delta x^{2}}(||\Delta x\sum_{k=1}^{n}\tilde{U_{j}^{2}}||-||\Delta x\sum_{k=1}^{n}U_{j}^{2}||)\\
 			||R||&=\frac{\cos(k\pi\Delta x)-1}{\Delta x}(||\sum_{k=1}^{n}\tilde{U_{j}^{2}}||-||\sum_{k=1}^{n}U_{j}^{2}||)
 		\end{align*}
-		
-		
-	\subsection{d. Calculation}
-		Show that $A(U-\tilde{U})=R$.  Use part (b) to show that $||U-\tilde{U}||=\mathcal{O}(\Delta x^{2})$
-	
-		\subsubsection{Answer}
 	\newpage
 	\subsection{f. MATLAB}
 		Write a program in MATLAB to solve $AU=F$ for the second order method.
@@ -292,10 +289,6 @@
 		\end{lstlisting}
 		\newpage
 	\section{Chapter 4, Problem 12}
-		\subsection{a. Calculation}
-		Show that if $\dot{S}=SA$, $S(0)=I$, then $p(t)=p(0)S(t)$
-		\subsubsection{Answer}
-		
 		\subsection{b. Calculation}
 		Use matrix norms and the fact that $||B^{k}||\leq||B||^{k}$ to show that the matrix exponential $e^{B}=\sum_{k=0}^{\infty}\frac{1}{k!}B^{K}$ converges.
 		\subsubsection{Answer}
@@ -382,7 +375,7 @@
 		
 		\newpage
 		\subsection{e. MATLAB}
-		Calculate the eigenvalues and right eigenvector matrix of A using the Matlab eig(A) function.  
+		Calculate the eigenvalues and right eigenvector matrix of A using the Matlab eig(A) function.  Print $r_{k},Ar_{k},\lambda_{k}r_{k}$ and $||\lambda_{k}r_{k}-Ar_{k}||$  
 		\subsubsection{Answer}
 		\begin{lstlisting}
 		%*****************************
@@ -431,8 +424,100 @@
 		disp(norm(n));
 		end
 		\end{lstlisting}
+		\textbf{Outputs:\n}
+		\begin{lstlisting}
+		>> CMSC660_HW3_Pr2e
+		
+		Ar_{k}, k=1
+		
+		0.3375
+		-2.3044
+		5.1678
+		-5.3994
+		
+		
+		lambda_{k}r_{k}, k=1
+		
+		0.3375
+		0
+		0
+		0
+		
+		
+		Norm lambda_{k}r_{k}-Ar_{k}, k=1
+		
+		7.8212
+		
+		
+		Ar_{k}, k=2
+		
+		1.0e-14 *
+		
+		0
+		0.0167
+		-0.1166
+		0.1998
+		
+		
+		lambda_{k}r_{k}, k=2
+		
+		1.0e-15 *
+		
+		0
+		-0.1665
+		0
+		0
+		
+		
+		Norm lambda_{k}r_{k}-Ar_{k}, k=2
+		
+		2.3374e-15
+		
+		
+		Ar_{k}, k=3
+		
+		-0.2941
+		1.1765
+		1.1765
+		-4.7059
+		
+		
+		lambda_{k}r_{k}, k=3
+		
+		0
+		0
+		1.1765
+		0
+		
+		
+		Norm lambda_{k}r_{k}-Ar_{k}, k=3
+		
+		4.8596
+		
+		
+		Ar_{k}, k=4
+		
+		0.1230
+		-0.1441
+		-0.8994
+		-1.9675
+		
+		
+		lambda_{k}r_{k}, k=4
+		
+		0
+		0
+		0
+		-1.9675
+		
+		
+		Norm lambda_{k}r_{k}-Ar_{k}, k=4
+		
+		0.9191
+		\end{lstlisting}
 		\newpage
 		\subsection{f. MATLAB}
+		Let $L=R^{-1}$.  Check that $l_{k}$ are the left eigenvectors of $A$ as in part e.
 		\subsubsection{Answer}
 		\begin{lstlisting}
 		%*****************************
@@ -482,14 +567,98 @@
 		disp(norm(n));
 		end
 		\end{lstlisting}
-		\subsection{g. MATLAB}
-		\subsubsection{Answer}
+		\textbf{Outputs:\n}
+		\begin{lstlisting}
+		>> CMSC660_HW3_Pr2f
 		
-		\subsection{h. MATLAB}
-		\subsubsection{Answer}
+		Al_{k}, k=1
 		
+		-0.7651
+		6.2661
+		-16.5566
+		14.9322
+		
+		
+		l_{k}lambda_{k}, k=1
+		
+		5.7994
+		0
+		0
+		0
+		
+		
+		Norm lambda_{k}-Al_{l}, k=1
+		
+		24.0717
+		
+		
+		Al_{k}, k=2
+		
+		-1.6411
+		5.2410
+		7.5896
+		-9.1819
+		
+		
+		l_{k}lambda_{k}, k=2
+		
+		1.0e-15 *
+		
+		0
+		-0.1254
+		0
+		0
+		
+		
+		Norm lambda_{k}-Al_{l}, k=2
+		
+		13.1175
+		
+		
+		Al_{k}, k=3
+		
+		0.6149
+		-2.7906
+		2.6778
+		-5.4173
+		
+		
+		l_{k}lambda_{k}, k=3
+		
+		0
+		0
+		2.1250
+		0
+		
+		
+		Norm lambda_{k}-Al_{l}, k=3
+		
+		6.1496
+		
+		
+		Al_{k}, k=4
+		
+		-0.2087
+		1.2835
+		-1.7109
+		-0.3330
+		
+		
+		l_{k}lambda_{k}, k=4
+		
+		0
+		0
+		0
+		-1.1037
+		
+		
+		Norm lambda_{k}-Al_{l}, k=4
+		
+		2.2829
+		\end{lstlisting}
 	\section{Chapter 4, Problem 13}
 		\subsection{a. MATLAB}
+			For $n=20$ print the eigenvalues of $A(s)$ for $s=0$ and $s=.1$.  What does this say about the condition number of the eigenvalue/eigenvector problem?  
 			\subsubsection{Answer}
 			\begin{lstlisting}
 			%*****************************
@@ -522,20 +691,61 @@
 			Y = A + s*B;
 			Lam = eig(Y);
 			\end{lstlisting}
-			
-		\subsection{b. MATLAB}
-			\subsubsection{Answer}
+			\textbf{Outputs (s=0): \n}
+			\begin{lstlisting}
+				>> CMSC660_HW3_Pr3a
+				0.0000
+				-8.9508
+				-8.8042
+				-8.5640
+				-8.2361
+				-7.8284
+				-7.3511
+				-6.8160
+				-6.2361
+				-5.6257
+				-5.0000
+				-4.3743
+				-3.7639
+				-1.0492
+				-1.1958
+				-1.4360
+				-3.1840
+				-1.7639
+				-2.1716
+				-2.6489
+			\end{lstlisting}
+			\textbf{Outputs (s=.1):\n}
+			\begin{lstlisting}
+				>> CMSC660_HW3_Pr3a
+				-9.3679 + 0.0000i
+				-9.1317 + 0.6168i
+				-9.1317 - 0.6168i
+				-8.4581 + 1.1892i
+				-8.4581 - 1.1892i
+				-7.4267 + 1.6585i
+				-7.4267 - 1.6585i
+				-6.1438 + 1.9720i
+				-6.1438 - 1.9720i
+				-4.7363 + 2.0923i
+				-4.7363 - 2.0923i
+				-3.3410 + 2.0012i
+				-3.3410 - 2.0012i
+				0.0000 + 0.0000i
+				-0.4366 + 0.5500i
+				-0.4366 - 0.5500i
+				-1.1009 + 1.2092i
+				-1.1009 - 1.2092i
+				-2.0911 + 1.7003i
+				-2.0911 - 1.7003i
+			\end{lstlisting}
+\newpage
 	
 	\begin{thebibliography}{2}
 		\bibitem{BG}
 		David Bindel and Johnathan Goodman.
 		\textit{Principles of Scientific Computing}. 
 		2009.
-		\bibitem{FNorm}
-		\textit{Wikipedia Page for the Frobenius Norm}
-		\begin{verbatim}
-			https://en.wikipedia.org/wiki/Matrix_norm#Frobenius_norm
-		\end{verbatim}
 		\bibitem{ComTest}
 		\textit{Wikipedia Page for Convergence Tests}
 		\begin{verbatim}

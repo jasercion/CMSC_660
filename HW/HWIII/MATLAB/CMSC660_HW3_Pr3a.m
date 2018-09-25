@@ -5,7 +5,7 @@
 
 % Constants
 n = 20;
-s = .1;
+s = 0.1;
 lambda = 1;
 mu = 4;
 
@@ -28,5 +28,6 @@ A = full(A);
 Y = A + s*B;
 Lam = eig(Y);
 
+disp(Lam);
 
     

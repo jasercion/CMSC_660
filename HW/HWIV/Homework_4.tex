@@ -82,19 +82,30 @@
 		Using the Back Substitution algorithm outline in the second program of part a,
 		
 		\begin{align*}
-		\text{\code{for i = n-1:1}}&\rightarrow\sum_{i=n-1}^{1}\\
+		\text{\code{for i = n:1}}&\rightarrow-\sum_{i=1}^{n}\\
 		\text{\code{j = i+1:n}}&\rightarrow\sum_{j=i+1}^{n}\\
-		\therefore W_{n}&=\sum_{i=n-1}^{1}\Big(1+\sum_{j=i+1}^{n}2\Big)
+		\therefore W_{n}&=-\sum_{i=1}^{n}\Big(1+\sum_{j=i+1}^{n}2\Big)
 		\end{align*}
 		
 		Converting to integrals and solving yields
 		
 		\begin{align*}
-			W_{n}&=\int_{n-1}^{1}\Big(1+\int_{x+1}^{n}2dy)dx\\
-			&=\int_{n-1}^{1}(1+2n-2x-2)dx\\
-			&=-n^2+3n-2
+			W_{n}&=-\int_{1}^{n}\Big(1+\int_{x+1}^{n}2dy)dx\\
+			&=-\int_{1}^{n}(1+2n-2x-2)dx\\
+			&=n^2-3n+2
 		\end{align*}
 		
+		The final operation which to obtain $B$, outlined in the code as 
+		
+		\begin{lstlisting}
+		x(i) = rhs/U(i,i)
+		\end{lstlisting}
+		
+		Contributes an additional $n$ operations per element, therefore the total number of flops is approximately
+		
+		\begin{align*}
+			F=n(n^{2}-3n+2)\approx n^3
+		\end{align*}
 		
 		%Rework with additional sum to take into account the fact that you are solving for a matrix not a vector.
 		
@@ -102,7 +113,7 @@
 		Use the above to verify the claim that computing $A^{-1}$ is more than twice as expensive as solving $Au=b$ by LU factorization.
 	
 		\subsubsection{Answer}
-		Part B shows that the cost of inverting a generic matrix scales as $\mathcal{O}(n^3)$, while Part A shows that LU decomposition scales as $\mathcal{O}(\frac{2}{3}n^3)$.  
+		Part B shows that the cost of inverting a generic matrix scales as $\mathcal{O}(n^3)$, while Part A shows that LU decomposition scales as $\mathcal{O}(\frac{2}{3}n^3)$.  Since taking the inverse of a matrix requires both forward and backward substitution, and forward substitution also takes $~n^{3}$ flops, the total flops required to take the inverse of a matrix $A$ is about $2n^{3}$, which is more than twice as expensive as the approximately $\frac{2}{3}n^{3}$ flops required for LU Factorization.
 		%Flesh out more  
 		
 	\section{Chapter 5, Problem 4}
@@ -194,16 +205,24 @@
 			l_{i,j}=\frac{1}{l_{j,j}}(a_{i,j}-\sum_{k=1}^{j-1}l_{i,k}l_{j,k})
 		\end{equation}
 		
+		Combining (4) and (5) provides an expression for any arbitrary element of the matrix:
+		
+		\begin{equation}
+		l_{i,j}=\frac{1}{\sqrt{a_{j,j}-\sum_{k=1}^{j-1}l_{j,k}^2}}(a_{i,j}-\sum_{k=1}^{j-1}l_{i,k}l_{j,k})
+		\end{equation}
+		
+		Indeed, when $i=j$ (6) reduces to (4).  \n
+		
 		The number of non-zero diagonal entries of $A$ is $n$.  The number of non-zero off-diagonal entries is dependent on $k$ and can be expressed as $n_{k}=\sum_{i=1}^{k}(n-i)$.  \n
 		
-		Starting with (4), the total number of operations required to calculate $n$ diagonal elements can be expressed as 
+		Starting with (4), the total number of operations required to calculate the diagonal element of a particular row can be expressed as 
 		
 		\begin{align*}
-			N=n(2+\int_{1}^{n-1}dx)\\
-			N&=n(2+(n-1)-1)=n^{2}
+			N=(2+\int_{1}^{n-1}dx)\\
+			N&=(2+(n-1)-1)\approx n
 		\end{align*}		
 		
-		The operations required to calculate the $n_{k}$ diagonal elements can be expressed as
+		The operations required to calculate the $n_{k}$ off-diagonal elements can be expressed as
 		
 		\begin{align*}
 			N_{k}&=n_{k}(2+\int_{1}^{n-1}dx)\\
@@ -212,13 +231,9 @@
 			&=(k-1)+n(k-1)-k(k-1)=-k^{2}+nk-n-1
 			\end{align*}
 		
-		Combining (4) and (5) provides an expression for any arbitrary element of the matrix:
+		Therefore, the total number of operations required to perform this Cholesky Decomposition is $n(k^{2}-nk+n+1)\approx k^{2}n$ flops.
 		
-		\begin{equation}
-			l_{i,j}=\frac{1}{\sqrt{a_{j,j}-\sum_{k=1}^{j-1}l_{j,k}^2}}(a_{i,j}-\sum_{k=1}^{j-1}l_{i,k}l_{j,k})
-		\end{equation}
 		
-		Indeed, when $i=j$ (6) reduces to (4).  
 		\subsection{c. MATLAB}
 		Write a procedure for Cholesky factorization of tridiagonal SPD matricies and apply it to the matrix of Exercise 4.11.  Compare the running time with this dense matrix factorizer and the one from Exercise 5.4.  Check that the answer is the same, up to roundoff.
 		

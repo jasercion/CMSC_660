@@ -1,0 +1,69 @@
+\documentclass{article}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{tabu}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{listings, lstautogobble}
+\graphicspath{ {./Images/} }
+
+\makeatletter
+\def\lecture{\@ifnextchar[{\@lectureWith}{\@lectureWithout}}
+\def\@lectureWith[#1]{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection: #1\@addpunct{.}}%
+		\sectionfont Lecture \thesection. #1\@addpunct{.}}\medbreak}
+\def\@lectureWithout{\medbreak\refstepcounter{section}%
+	\renewcommand{\leftmark}{Lecture \thesection}
+	\noindent{\addcontentsline{toc}{section}{Lecture \thesection.}%
+		\sectionfont Lecture \thesection.}\medbreak}
+\makeatother
+
+\newcommand{\n}{\newline}
+\def\code#1{\texttt{#1}}
+\lstset{autogobble=true, language=matlab}
+
+\title{CMSC 660 HW V}
+\date{10/4/18}
+\author{Joe Asercion}
+\begin{document}
+	\maketitle
+	\textbf{Problem Statement:} For a fixed $n\in\mathbb{N}$, we wish to find ${\alpha_{l}}_{1\leq l\leq N}$ which are solutions of the linear system
+	
+	\begin{equation}
+		\forall(i_{x},i_{y})\in\mathbb{N}^{2},i_{x}+i_{y}\leq n,\sum_{l=1}^{N}\alpha_{l}\delta_{x}^{i_{x}}\delta_{y}^{i_{y}}\phi_{l}(\mathbf{x}_{0})=\delta_{x}^{i_{x}}\delta_{y}^{i_{y}}u_{E}(\mathbf{x}_0)
+	\end{equation}
+	\section{Problem 1}
+	Implement a function which computes the matrix of system (1).
+	\subsection{a.  Identify Inputs/Outputs}
+	
+	\subsubsection{Answer}
+	
+	\subsection{b. Choose an equation ordering}
+	
+	\subsubsection{Answer}
+	
+	\subsection{c. Implement and test the corresponding index function}
+	The corresponding index function computes the index of the ($i_{x},i_{y}$) equation
+	
+	\subsubsection{Answer}
+	
+	\subsection{d. Derive a formula for the entries of the matrix}
+	
+	\subsubsection{Answer}
+	
+	\subsection{e. Implement and test a function that builds one column of the matrix}
+	The function must compute the derivatives of one plane wave into the vector using the ordering from part b
+	
+	\subsubsection{Answer}
+	
+	\subsection{f. Implement and test a function that builds the full matrix}
+	
+	\subsubsection{Answer}
+	
+	
+\end{document}
